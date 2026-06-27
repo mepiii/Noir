@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<!--
+Purpose: NOIR Ulasan page.
+Callers: Browser navigation.
+Deps: assets/styles.css, assets/app.js.
+API: Static HTML document.
+Side effects: Loads shared storefront module.
+-->
+<html lang="id">
+<head><meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>NOIR — Fashion Aesthetic Store</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Jost:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="ulasan">
+
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <div id="loader">
+        <div class="loader-brand">NOIR<em>.</em></div>
+        <div class="loader-bar">
+            <div class="loader-prog"></div>
+        </div>
+    </div>
+
+    <!-- SEARCH OVERLAY -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-box">
+            <input class="search-input" id="searchInput" placeholder="Cari koleksi…" autocomplete="off" />
+            <button class="search-close" onclick="closeSearch()">
+                <svg viewBox="0 0 24 24" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+        </div>
+        <div class="search-hint">Ketik nama produk, kategori, atau harga</div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <a class="nav-logo" href="index.html">NOIR<em>.</em></a>
+        <ul class="nav-links">
+            <li><a href="index.html" data-page="home" >Home</a></li>
+            <li><a href="koleksi.html" data-page="koleksi">Koleksi</a></li>
+            <li><a href="sale.html" data-page="sale">Sale</a></li>
+            <li><a href="ulasan.html" data-page="ulasan">Ulasan</a></li>
+            <li><a href="instagram.html" data-page="instagram">Instagram</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="nav-icon-btn" id="openSearch" title="Cari">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+            </button>
+            <button class="nav-icon-btn" id="wishNavBtn" title="Wishlist">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+            </button>
+            <button class="nav-icon-btn" id="openCart" title="Keranjang">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                <span class="nav-cart-bubble" id="cartCount">0</span>
+            </button>
+            <a class="nav-cta" href="koleksi.html">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+                Shop Now
+            </a>
+            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <div class="mob-nav" id="mobNav">
+        <ul>
+            <li><a href="index.html" data-mob="home" >Home</a></li>
+            <li><a href="koleksi.html" data-mob="koleksi">Koleksi</a></li>
+            <li><a href="sale.html" data-mob="sale">Sale</a></li>
+            <li><a href="ulasan.html" data-mob="ulasan">Ulasan</a></li>
+            <li><a href="instagram.html" data-mob="instagram">Instagram</a></li>
+        </ul>
+    </div>
+
+    
+<!-- PAGE: ULASAN -->
+    <div class="page active" id="page-ulasan">
+        <div class="page-inner">
+            <section class="sec testi-sec">
+                <div class="row-top">
+                    <div><span class="sec-eyebrow">Testimoni</span>
+                        <h2 class="sec-h">Kata <em>Mereka</em></h2>
+                    </div>
+                </div>
+                <div class="tgrid">
+                    <div class="tcard">
+                        <div class="tcard-qmark">"</div>
+                        <p class="tcard-text">Kualitas baju NOIR beda banget dari yang lain. Jahitannya rapi, bahan
+                            premium, dan tampilannya persis kayak foto. Udah order 5x dan gak pernah kecewa!</p>
+                        <div class="tcard-stars"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg></div>
+                        <div class="tcard-user"><img class="tcard-ava"
+                                src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&q=80" alt="" />
+                            <div>
+                                <div class="tcard-name">Siti Rahmah</div>
+                                <div class="tcard-loc">Palembang, Sumsel</div>
+                                <div class="tcard-check"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>Terverifikasi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tcard">
+                        <div class="tcard-qmark">"</div>
+                        <p class="tcard-text">Suka banget sama konsep hitam-putih NOIR. Elegan, timeless, dan cocok
+                            dipakai ke mana-mana. Dress-nya pas banget di badan, gak perlu alterasi lagi.</p>
+                        <div class="tcard-stars"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg></div>
+                        <div class="tcard-user"><img class="tcard-ava"
+                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="" />
+                            <div>
+                                <div class="tcard-name">Nadia Putri</div>
+                                <div class="tcard-loc">Jakarta Selatan</div>
+                                <div class="tcard-check"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>Terverifikasi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tcard">
+                        <div class="tcard-qmark">"</div>
+                        <p class="tcard-text">CS NOIR super responsif dan pengiriman kilat! Packaging-nya juga aesthetic
+                            banget, berasa beli dari brand internasional. Definitely my go-to fashion store!</p>
+                        <div class="tcard-stars"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg></div>
+                        <div class="tcard-user"><img class="tcard-ava"
+                                src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&q=80" alt="" />
+                            <div>
+                                <div class="tcard-name">Ayu Maharani</div>
+                                <div class="tcard-loc">Bandung, Jawa Barat</div>
+                                <div class="tcard-check"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>Terverifikasi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    
+<!-- CART DRAWER -->
+    <div class="veil" id="veil" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cd-head">
+            <h3>Shopping Bag</h3>
+            <button class="cd-close" onclick="closeCart()"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg></button>
+        </div>
+        <div class="cd-body" id="cartBody"></div>
+        <div class="cd-foot" id="cartFoot" style="display:none;">
+            <div class="promo-row"><input class="promo-field" id="promoIn" placeholder="Kode promo…" /><button
+                    class="promo-btn" onclick="applyPromo()">Pakai</button></div>
+            <div class="cd-totals">
+                <div class="cd-total-row"><span>Subtotal</span><span id="cSub">Rp 0</span></div>
+                <div class="cd-total-row"><span>Ongkos kirim</span><span
+                        style="color:#3d5c45;font-weight:600;">GRATIS</span></div>
+                <div class="cd-total-row" id="discRow" style="display:none;"><span>Diskon</span><span id="discAmt"
+                        style="color:#c4555a;font-weight:600;"></span></div>
+                <div class="cd-total-row big"><span>Total</span><span id="cTotal">Rp 0</span></div>
+            </div>
+            <button class="btn-checkout" onclick="openCheckout()"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>Checkout</button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div class="modal-veil" id="checkoutModal">
+        <div class="modal">
+            <div class="modal-top">
+                <h3>Checkout</h3><button onclick="closeCheckout()"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>Nama Lengkap</label><input type="text" id="cName" placeholder="Contoh: Siti Rahmah" />
+                </div>
+                <div class="m2col">
+                    <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.71a16 16 0 0 0 6 6l.81-.81a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z" />
+                            </svg>WhatsApp</label><input type="tel" id="cPhone" placeholder="08xxxxxxxxxx" /></div>
+                    <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>Email</label><input type="email" id="cEmail" placeholder="email@kamu.com" /></div>
+                </div>
+                <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>Alamat Lengkap</label><textarea id="cAddr"
+                        placeholder="Jl. Merdeka No.12, RT 03/RW 04…"></textarea></div>
+                <div class="m2col">
+                    <div class="mrow"><label>Kota</label><input type="text" id="cCity" placeholder="Palembang" /></div>
+                    <div class="mrow"><label>Kode Pos</label><input type="text" id="cZip" placeholder="30111" /></div>
+                </div>
+                <div class="mrow"><label>Ekspedisi</label>
+                    <select id="cEksp">
+                        <option value="jne">JNE Regular (2–3 hari) · Gratis</option>
+                        <option value="jnt">J&T Express (1–2 hari) · Gratis</option>
+                        <option value="sicepat">SiCepat (1–2 hari) · Gratis</option>
+                        <option value="sameday">Same Day Palembang · Gratis</option>
+                    </select>
+                </div>
+                <div class="mrow"><label>Metode Pembayaran</label>
+                    <div class="pay-opts" id="payOpts">
+                        <div class="popt on" data-p="gopay" onclick="selPay(this)">GoPay</div>
+                        <div class="popt" data-p="ovo" onclick="selPay(this)">OVO</div>
+                        <div class="popt" data-p="dana" onclick="selPay(this)">Dana</div>
+                        <div class="popt" data-p="bca" onclick="selPay(this)">BCA</div>
+                        <div class="popt" data-p="mandiri" onclick="selPay(this)">Mandiri</div>
+                        <div class="popt" data-p="cod" onclick="selPay(this)">COD</div>
+                    </div>
+                </div>
+                <hr class="mhr" />
+                <div class="sum-title">Ringkasan Pesanan</div>
+                <div class="sum-items" id="sumItems"></div>
+                <div class="sum-box">
+                    <div class="sum-line"><span>Subtotal</span><span id="mSub">Rp 0</span></div>
+                    <div class="sum-line"><span>Ongkos kirim</span><span
+                            style="color:#3d5c45;font-weight:600;">GRATIS</span></div>
+                    <div class="sum-line" id="mDiscRow" style="display:none;"><span>Diskon</span><span id="mDisc"
+                            style="color:#c4555a;"></span></div>
+                    <div class="sum-line total"><span>Total Bayar</span><span id="mTotal">Rp 0</span></div>
+                </div>
+                <button class="btn-order" onclick="placeOrder()"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>Konfirmasi Pesanan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STRUK -->
+    <div class="struk-veil" id="strukVeil">
+        <div class="struk" id="strukEl">
+            <div class="zigzag-top"></div>
+            <div class="struk-inner" id="strukInner"></div>
+            <div class="zigzag-bot"></div>
+            <div class="struk-btns">
+                <button class="s-btn print" onclick="window.print()"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 6 2 18 2 18 9" />
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                        <rect x="6" y="14" width="12" height="8" />
+                    </svg>Cetak</button>
+                <button class="s-btn share" onclick="showToast('📤 Link struk disalin!')"><svg viewBox="0 0 24 24"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                        <polyline points="16 6 12 2 8 6" />
+                        <line x1="12" y1="2" x2="12" y2="15" />
+                    </svg>Bagikan</button>
+                <button class="s-btn close" onclick="closeStruk()"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastEl"></div>
+
+    
+    <script type="module" src="assets/app.js"></script>
+</body>
+</html>
