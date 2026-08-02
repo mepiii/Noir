@@ -1,0 +1,5023 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>NOIR — Fashion Aesthetic Store</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Jost:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --b: #0a0a0a;
+            --b2: #1a1a1a;
+            --b3: #2d2d2d;
+            --b4: #444;
+            --w: #ffffff;
+            --w2: #f5f5f5;
+            --w3: #e8e8e8;
+            --w4: #c8c8c8;
+            --r: 8px;
+            --r2: 16px;
+            --r3: 28px;
+            --sh: 0 2px 20px rgba(0, 0, 0, .08);
+            --sh2: 0 8px 40px rgba(0, 0, 0, .14);
+            --sh3: 0 24px 70px rgba(0, 0, 0, .22);
+            --fn-d: 'Bodoni Moda', serif;
+            --fn-b: 'Jost', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: var(--fn-b);
+            background: var(--w);
+            color: var(--b);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            object-fit: cover
+        }
+
+        button,
+        a {
+            font-family: var(--fn-b);
+            cursor: pointer
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--w)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--b3);
+            border-radius: 4px
+        }
+
+        /* CURSOR */
+        .cursor {
+            width: 10px;
+            height: 10px;
+            background: var(--b);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s, background .2s
+        }
+
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(10, 10, 10, .3);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform .12s ease, width .25s, height .25s
+        }
+
+        body.hovered .cursor {
+            width: 6px;
+            height: 6px;
+            background: var(--b3)
+        }
+
+        body.hovered .cursor-ring {
+            width: 48px;
+            height: 48px
+        }
+
+        /* LOADER */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: var(--b);
+            z-index: 8000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1.2rem;
+            transition: opacity .8s, visibility .8s
+        }
+
+        #loader.hide {
+            opacity: 0;
+            visibility: hidden
+        }
+
+        .loader-brand {
+            font-family: var(--fn-d);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--w);
+            letter-spacing: .2em
+        }
+
+        .loader-brand em {
+            font-style: italic;
+            font-weight: 400
+        }
+
+        .loader-bar {
+            width: 120px;
+            height: 1.5px;
+            background: var(--b3);
+            border-radius: 2px;
+            overflow: hidden
+        }
+
+        .loader-prog {
+            height: 100%;
+            background: var(--w);
+            border-radius: 2px;
+            animation: loadAnim 1.8s ease forwards
+        }
+
+        @keyframes loadAnim {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        /* NAVBAR */
+        .nav {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 700;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            background: rgba(255, 255, 255, .97);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(10, 10, 10, .08);
+            transition: box-shadow .3s;
+            gap: 2rem
+        }
+
+        .nav.up {
+            box-shadow: 0 2px 30px rgba(0, 0, 0, .08)
+        }
+
+        .nav-logo {
+            font-family: var(--fn-d);
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: .22em;
+            color: var(--b);
+            flex-shrink: 0;
+            cursor: pointer
+        }
+
+        .nav-logo em {
+            font-style: italic;
+            font-weight: 400
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+            margin: 0;
+            border-left: 1px solid var(--w3);
+            border-right: 1px solid var(--w3)
+        }
+
+        .nav-links li {
+            border-right: 1px solid var(--w3)
+        }
+
+        .nav-links li:first-child {
+            border-left: none
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 0 1.1rem;
+            height: 64px;
+            line-height: 64px;
+            font-size: .68rem;
+            font-weight: 500;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--b4);
+            position: relative;
+            transition: color .2s, background .2s;
+            cursor: pointer
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--b);
+            transition: width .35s
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--b);
+            background: var(--w2)
+        }
+
+        .nav-links a.active::after,
+        .nav-links a:hover::after {
+            width: 100%
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto
+        }
+
+        .nav-icon-btn {
+            width: 38px;
+            height: 38px;
+            border: none;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+            position: relative
+        }
+
+        .nav-icon-btn:hover {
+            background: var(--w3)
+        }
+
+        .nav-icon-btn svg {
+            width: 18px;
+            height: 18px
+        }
+
+        .nav-cart-bubble {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 16px;
+            height: 16px;
+            background: var(--b);
+            color: var(--w);
+            border-radius: 50%;
+            font-size: .55rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--b);
+            color: var(--w);
+            border: none;
+            border-radius: 99px;
+            padding: .42rem 1.1rem;
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            transition: background .25s, transform .15s;
+            white-space: nowrap
+        }
+
+        .nav-cta:hover {
+            background: var(--b3);
+            transform: scale(1.03)
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            padding: 6px
+        }
+
+        .hamburger span {
+            display: block;
+            width: 20px;
+            height: 1.5px;
+            background: var(--b);
+            transition: .3s
+        }
+
+        /* PAGES SYSTEM */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 64px
+        }
+
+        .page.active {
+            display: block
+        }
+
+        .page-inner {
+            animation: pageFadeIn .45s ease forwards
+        }
+
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* SEARCH OVERLAY */
+        .search-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, .92);
+            backdrop-filter: blur(12px);
+            z-index: 750;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 120px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .35s
+        }
+
+        .search-overlay.on {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .search-box {
+            width: 90%;
+            max-width: 680px;
+            position: relative;
+            margin-bottom: 2rem
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid rgba(255, 255, 255, .4);
+            color: #fff;
+            font-family: var(--fn-d);
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 400;
+            font-style: italic;
+            padding: .5rem 2.5rem .5rem 0;
+            outline: none;
+            letter-spacing: .02em;
+            transition: border-color .3s
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, .25)
+        }
+
+        .search-input:focus {
+            border-color: #fff
+        }
+
+        .search-close {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, .5);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color .2s
+        }
+
+        .search-close:hover {
+            color: #fff
+        }
+
+        .search-close svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none
+        }
+
+        .search-hint {
+            font-size: .7rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .3);
+            margin-bottom: 2.5rem
+        }
+
+        .search-results {
+            width: 90%;
+            max-width: 680px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            max-height: 50vh;
+            overflow-y: auto
+        }
+
+        .search-results::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .search-results::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, .2)
+        }
+
+        .sr-card {
+            background: rgba(255, 255, 255, .08);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: background .2s
+        }
+
+        .sr-card:hover {
+            background: rgba(255, 255, 255, .14)
+        }
+
+        .sr-card-img {
+            height: 140px;
+            overflow: hidden
+        }
+
+        .sr-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            filter: grayscale(30%);
+            transition: filter .3s
+        }
+
+        .sr-card:hover .sr-card-img img {
+            filter: grayscale(0%)
+        }
+
+        .sr-card-info {
+            padding: .7rem .8rem
+        }
+
+        .sr-card-name {
+            font-family: var(--fn-d);
+            font-size: .88rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: .2rem;
+            line-height: 1.2
+        }
+
+        .sr-card-price {
+            font-size: .75rem;
+            color: rgba(255, 255, 255, .6)
+        }
+
+        .sr-empty {
+            color: rgba(255, 255, 255, .4);
+            font-size: .9rem;
+            letter-spacing: .1em;
+            text-align: center;
+            padding: 2rem;
+            width: 100%;
+            grid-column: 1/-1
+        }
+
+        /* HOME */
+        .hero {
+            min-height: calc(100vh - 64px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero-left {
+            background: var(--b);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 6% 7%;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero-left-grain {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+            pointer-events: none
+        }
+
+        .hero-season {
+            font-size: .65rem;
+            font-weight: 400;
+            letter-spacing: .4em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .4);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .hero-season::before {
+            content: '';
+            width: 28px;
+            height: 1px;
+            background: rgba(255, 255, 255, .3)
+        }
+
+        .hero-title {
+            font-family: var(--fn-d);
+            font-size: clamp(3.5rem, 6vw, 6.5rem);
+            font-weight: 900;
+            color: var(--w);
+            line-height: .95;
+            letter-spacing: -.02em;
+            margin-bottom: 2rem
+        }
+
+        .hero-title .italic {
+            font-style: italic;
+            font-weight: 400;
+            display: block
+        }
+
+        .hero-title .outline {
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, .6);
+            color: transparent;
+            display: block
+        }
+
+        .hero-desc {
+            font-size: .88rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, .55);
+            line-height: 1.85;
+            max-width: 340px;
+            margin-bottom: 2.8rem;
+            letter-spacing: .02em
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .btn-w {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--w);
+            color: var(--b);
+            border: none;
+            border-radius: 99px;
+            padding: .72rem 1.8rem;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: transform .2s, box-shadow .2s;
+            cursor: pointer
+        }
+
+        .btn-w:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(255, 255, 255, .2)
+        }
+
+        .btn-wo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: rgba(255, 255, 255, .7);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 99px;
+            padding: .72rem 1.8rem;
+            font-size: .75rem;
+            font-weight: 500;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transition: all .2s;
+            cursor: pointer
+        }
+
+        .btn-wo:hover {
+            color: var(--w);
+            border-color: rgba(255, 255, 255, .6)
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, .1)
+        }
+
+        .h-stat .n {
+            font-family: var(--fn-d);
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--w)
+        }
+
+        .h-stat .l {
+            font-size: .6rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .35);
+            margin-top: 3px
+        }
+
+        .hero-right {
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            filter: grayscale(15%)
+        }
+
+        .hero-right-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 55%, rgba(10, 10, 10, .35) 100%)
+        }
+
+        .hero-float-card {
+            position: absolute;
+            bottom: 40px;
+            right: 32px;
+            background: rgba(255, 255, 255, .94);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            min-width: 180px;
+            box-shadow: var(--sh2)
+        }
+
+        .hfc-label {
+            font-size: .6rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--b4);
+            margin-bottom: .35rem
+        }
+
+        .hfc-name {
+            font-family: var(--fn-d);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: .25rem
+        }
+
+        .hfc-price {
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--b)
+        }
+
+        .hfc-add {
+            margin-top: .7rem;
+            width: 100%;
+            background: var(--b);
+            color: var(--w);
+            border: none;
+            border-radius: 8px;
+            padding: .45rem;
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            transition: background .2s
+        }
+
+        .hfc-add:hover {
+            background: var(--b3)
+        }
+
+        .hero-tag-top {
+            position: absolute;
+            top: 80px;
+            left: 28px;
+            background: var(--b);
+            color: var(--w);
+            border-radius: 99px;
+            padding: .35rem 1rem;
+            font-size: .62rem;
+            font-weight: 600;
+            letter-spacing: .15em;
+            text-transform: uppercase
+        }
+
+        /* TICKER */
+        .ticker {
+            background: var(--b);
+            padding: .65rem 0;
+            overflow: hidden;
+            border-top: 1px solid var(--b3)
+        }
+
+        .ticker-inner {
+            display: flex;
+            white-space: nowrap;
+            animation: tickAnim 30s linear infinite
+        }
+
+        .ticker-inner:hover {
+            animation-play-state: paused
+        }
+
+        .t-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 2rem;
+            font-size: .62rem;
+            font-weight: 400;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .5)
+        }
+
+        .t-diamond {
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, .3);
+            transform: rotate(45deg)
+        }
+
+        @keyframes tickAnim {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* FEATURES */
+        .feat-sec {
+            background: var(--w2);
+            padding: 4rem 5%
+        }
+
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--w3)
+        }
+
+        .feat-card {
+            background: var(--w2);
+            padding: 2.5rem 2rem;
+            text-align: center
+        }
+
+        .feat-icon-wrap {
+            width: 52px;
+            height: 52px;
+            background: var(--w);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            box-shadow: var(--sh)
+        }
+
+        .feat-icon-wrap svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--b);
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .feat-title {
+            font-family: var(--fn-d);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: .5rem
+        }
+
+        .feat-desc {
+            font-size: .8rem;
+            color: var(--b3);
+            line-height: 1.7
+        }
+
+        /* SECTION COMMON */
+        .sec {
+            padding: 80px 5%
+        }
+
+        .sec-eyebrow {
+            font-size: .62rem;
+            font-weight: 500;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--b4);
+            display: block;
+            margin-bottom: .6rem
+        }
+
+        .sec-h {
+            font-family: var(--fn-d);
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -.02em
+        }
+
+        .sec-h em {
+            font-style: italic;
+            font-weight: 400
+        }
+
+        .row-top {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            gap: 1rem
+        }
+
+        .link-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .72rem;
+            font-weight: 500;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--b3);
+            border-bottom: 1px solid var(--w3);
+            padding-bottom: .2rem;
+            transition: color .2s, border-color .2s;
+            white-space: nowrap
+        }
+
+        .link-more svg {
+            width: 14px;
+            height: 14px;
+            transition: transform .2s
+        }
+
+        .link-more:hover {
+            color: var(--b);
+            border-color: var(--b)
+        }
+
+        .link-more:hover svg {
+            transform: translateX(4px)
+        }
+
+        /* BENTO */
+        .bento {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 240px);
+            gap: 14px
+        }
+
+        .bento-card:first-child {
+            grid-column: 1/3
+        }
+
+        .bento-card:nth-child(4) {
+            grid-column: 3/4;
+            grid-row: 1/3
+        }
+
+        .bento-card {
+            position: relative;
+            border-radius: var(--r2);
+            overflow: hidden;
+            cursor: pointer
+        }
+
+        .bento-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .6s
+        }
+
+        .bento-card:hover img {
+            transform: scale(1.06)
+        }
+
+        .bento-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, .62) 40%, transparent 100%);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.4rem 1.6rem;
+            gap: 1rem
+        }
+
+        .bento-new {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: var(--w);
+            color: var(--b);
+            border-radius: 99px;
+            padding: .3rem .9rem;
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .bento-cat-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, .15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .bento-cat-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 1.4;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .bento-name {
+            font-family: var(--fn-d);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.1
+        }
+
+        .bento-count {
+            font-size: .68rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .6);
+            margin-top: .2rem
+        }
+
+        /* PRODUCTS GRID */
+        .pgrid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap
+        }
+
+        .flt {
+            padding: .4rem 1.1rem;
+            border: 1.5px solid var(--w3);
+            border-radius: 99px;
+            font-size: .7rem;
+            font-weight: 500;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            background: var(--w);
+            color: var(--b3);
+            transition: all .2s;
+            cursor: pointer
+        }
+
+        .flt:hover {
+            border-color: var(--b4);
+            color: var(--b)
+        }
+
+        .flt.on {
+            background: var(--b);
+            color: var(--w);
+            border-color: var(--b)
+        }
+
+        .pcard {
+            border-radius: var(--r2);
+            overflow: hidden;
+            background: var(--w);
+            box-shadow: var(--sh);
+            transition: box-shadow .3s, transform .3s;
+            cursor: pointer
+        }
+
+        .pcard:hover {
+            box-shadow: var(--sh2);
+            transform: translateY(-4px)
+        }
+
+        .p-imgwrap {
+            position: relative;
+            overflow: hidden;
+            background: var(--w2)
+        }
+
+        .p-imgwrap img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            object-position: top;
+            transition: transform .6s
+        }
+
+        .pcard:hover .p-imgwrap img {
+            transform: scale(1.05)
+        }
+
+        .p-flag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            border-radius: 99px;
+            padding: .26rem .75rem;
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .p-flag.new {
+            background: #3d5c45;
+            color: #fff
+        }
+
+        .p-flag.sale {
+            background: #c4555a;
+            color: #fff
+        }
+
+        .p-flag.hot {
+            background: var(--b);
+            color: #fff
+        }
+
+        .p-wish {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, .88);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .p-wish svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--b);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round
+        }
+
+        .p-hoverbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, .88);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: .7rem 1rem;
+            transform: translateY(100%);
+            transition: transform .3s
+        }
+
+        .pcard:hover .p-hoverbar {
+            transform: translateY(0)
+        }
+
+        .p-add-cart {
+            flex: 1;
+            background: #fff;
+            color: var(--b);
+            border: none;
+            border-radius: 8px;
+            padding: .45rem .7rem;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            transition: background .2s
+        }
+
+        .p-add-cart:hover {
+            background: var(--w3)
+        }
+
+        .p-quickview {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, .12);
+            border: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .p-quickview svg {
+            width: 14px;
+            height: 14px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round
+        }
+
+        .p-info {
+            padding: 1rem 1.1rem 1.2rem
+        }
+
+        .p-swatches {
+            display: flex;
+            gap: 5px;
+            margin-bottom: .6rem
+        }
+
+        .p-swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(0, 0, 0, .12)
+        }
+
+        .p-name {
+            font-family: var(--fn-d);
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: .25rem
+        }
+
+        .p-sub {
+            font-size: .72rem;
+            color: var(--b4);
+            letter-spacing: .06em;
+            margin-bottom: .6rem;
+            text-transform: uppercase
+        }
+
+        .p-pr {
+            display: flex;
+            align-items: baseline;
+            gap: .5rem;
+            margin-bottom: .5rem
+        }
+
+        .p-price {
+            font-size: .98rem;
+            font-weight: 700;
+            color: var(--b)
+        }
+
+        .p-ori {
+            font-size: .78rem;
+            color: var(--b4);
+            text-decoration: line-through
+        }
+
+        .p-pct {
+            font-size: .7rem;
+            font-weight: 700;
+            color: #c4555a;
+            background: rgba(196, 85, 90, .1);
+            border-radius: 4px;
+            padding: .1rem .35rem
+        }
+
+        .p-stars {
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .p-star-icons {
+            display: flex;
+            gap: 1px
+        }
+
+        .p-star-icons svg {
+            width: 11px;
+            height: 11px;
+            fill: #f0b429;
+            stroke: none
+        }
+
+        .p-sold {
+            font-size: .65rem;
+            color: var(--b4);
+            letter-spacing: .04em
+        }
+
+        /* ═══ PRODUCT DETAIL PAGE ═══ */
+        .pd-breadcrumb {
+            padding: 1.5rem 5% .5rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .72rem;
+            color: var(--b4)
+        }
+
+        .pd-breadcrumb a {
+            color: var(--b4);
+            cursor: pointer;
+            transition: color .2s
+        }
+
+        .pd-breadcrumb a:hover {
+            color: var(--b)
+        }
+
+        .pd-breadcrumb span {
+            color: var(--w4)
+        }
+
+        .pd-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5%;
+            padding: 1rem 5% 4rem;
+            align-items: start
+        }
+
+        /* Gallery */
+        .pd-gallery {
+            position: sticky;
+            top: 80px
+        }
+
+        .pd-main-img {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--w2);
+            aspect-ratio: 3/4;
+            position: relative
+        }
+
+        .pd-main-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            transition: opacity .4s
+        }
+
+        .pd-main-img .pd-flag {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            border-radius: 99px;
+            padding: .3rem .9rem;
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .pd-main-img .pd-flag.new {
+            background: #3d5c45;
+            color: #fff
+        }
+
+        .pd-main-img .pd-flag.sale {
+            background: #c4555a;
+            color: #fff
+        }
+
+        .pd-main-img .pd-flag.hot {
+            background: var(--b);
+            color: #fff
+        }
+
+        .pd-thumbs {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px
+        }
+
+        .pd-thumbs::-webkit-scrollbar {
+            height: 3px
+        }
+
+        .pd-thumbs::-webkit-scrollbar-thumb {
+            background: var(--b3);
+            border-radius: 3px
+        }
+
+        .pd-thumb {
+            width: 80px;
+            height: 96px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color .2s;
+            flex-shrink: 0
+        }
+
+        .pd-thumb.active {
+            border-color: var(--b)
+        }
+
+        .pd-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top
+        }
+
+        /* Detail Info */
+        .pd-info {
+            padding: 0
+        }
+
+        .pd-brand {
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: var(--b4);
+            margin-bottom: .6rem
+        }
+
+        .pd-name {
+            font-family: var(--fn-d);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -.02em;
+            margin-bottom: .4rem
+        }
+
+        .pd-sub {
+            font-size: .82rem;
+            color: var(--b4);
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin-bottom: 1.2rem
+        }
+
+        .pd-rating-row {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--w3)
+        }
+
+        .pd-stars-wrap {
+            display: flex;
+            gap: 2px
+        }
+
+        .pd-stars-wrap svg {
+            width: 14px;
+            height: 14px;
+            fill: #f0b429;
+            stroke: none
+        }
+
+        .pd-rating-num {
+            font-size: .82rem;
+            font-weight: 600
+        }
+
+        .pd-review-link {
+            font-size: .78rem;
+            color: var(--b4);
+            border-bottom: 1px solid var(--w3);
+            cursor: pointer;
+            transition: color .2s
+        }
+
+        .pd-review-link:hover {
+            color: var(--b)
+        }
+
+        .pd-sold-badge {
+            font-size: .72rem;
+            color: #3d5c45;
+            background: rgba(61, 92, 69, .1);
+            padding: .25rem .7rem;
+            border-radius: 99px;
+            font-weight: 600
+        }
+
+        .pd-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: .8rem;
+            margin-bottom: 1.8rem
+        }
+
+        .pd-price {
+            font-family: var(--fn-d);
+            font-size: 2rem;
+            font-weight: 700
+        }
+
+        .pd-ori-price {
+            font-size: 1.1rem;
+            color: var(--b4);
+            text-decoration: line-through
+        }
+
+        .pd-disc-badge {
+            background: #c4555a;
+            color: #fff;
+            border-radius: 8px;
+            padding: .25rem .65rem;
+            font-size: .75rem;
+            font-weight: 700
+        }
+
+        /* Color picker */
+        .pd-section-label {
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--b4);
+            margin-bottom: .75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .pd-section-label span {
+            font-weight: 400;
+            color: var(--b3);
+            letter-spacing: 0;
+            font-size: .78rem;
+            text-transform: none
+        }
+
+        .pd-colors {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.6rem;
+            flex-wrap: wrap
+        }
+
+        .pd-color-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2.5px solid transparent;
+            cursor: pointer;
+            transition: all .2s;
+            position: relative;
+            outline: none
+        }
+
+        .pd-color-btn.active {
+            border-color: var(--b)
+        }
+
+        .pd-color-btn::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1.5px solid transparent;
+            transition: border-color .2s
+        }
+
+        .pd-color-btn.active::after {
+            border-color: var(--b)
+        }
+
+        /* Size picker */
+        .pd-sizes {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap
+        }
+
+        .pd-size-btn {
+            min-width: 52px;
+            height: 44px;
+            border: 1.5px solid var(--w3);
+            border-radius: 10px;
+            background: var(--w);
+            font-size: .82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+            padding: 0 .8rem;
+            position: relative
+        }
+
+        .pd-size-btn:hover:not(.soldout) {
+            border-color: var(--b4);
+            background: var(--w2)
+        }
+
+        .pd-size-btn.active {
+            border-color: var(--b);
+            background: var(--b);
+            color: var(--w)
+        }
+
+        .pd-size-btn.soldout {
+            color: var(--w4);
+            cursor: not-allowed;
+            position: relative;
+            overflow: hidden
+        }
+
+        .pd-size-btn.soldout::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--w4);
+            transform: rotate(-18deg)
+        }
+
+        /* Qty */
+        .pd-qty-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.6rem
+        }
+
+        .pd-qty-wrap {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid var(--w3);
+            border-radius: 12px;
+            overflow: hidden
+        }
+
+        .pd-qty-btn {
+            width: 42px;
+            height: 42px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s
+        }
+
+        .pd-qty-btn:hover {
+            background: var(--w2)
+        }
+
+        .pd-qty-num {
+            min-width: 42px;
+            text-align: center;
+            font-size: .95rem;
+            font-weight: 600;
+            border-left: 1.5px solid var(--w3);
+            border-right: 1.5px solid var(--w3);
+            height: 42px;
+            line-height: 42px
+        }
+
+        .pd-stock {
+            font-size: .76rem;
+            color: #3d5c45;
+            font-weight: 600
+        }
+
+        .pd-stock.low {
+            color: #c4555a
+        }
+
+        /* CTA buttons */
+        .pd-btn-cart {
+            width: 100%;
+            background: var(--b);
+            color: var(--w);
+            border: none;
+            border-radius: 14px;
+            padding: 1rem;
+            font-size: .82rem;
+            font-weight: 600;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background .2s, transform .15s;
+            margin-bottom: .7rem
+        }
+
+        .pd-btn-cart:hover {
+            background: var(--b3);
+            transform: scale(1.01)
+        }
+
+        .pd-btn-cart svg {
+            width: 17px;
+            height: 17px;
+            stroke: #fff;
+            fill: none
+        }
+
+        .pd-btn-wish {
+            width: 100%;
+            background: transparent;
+            color: var(--b);
+            border: 1.5px solid var(--w3);
+            border-radius: 14px;
+            padding: .9rem;
+            font-size: .8rem;
+            font-weight: 500;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all .2s;
+            margin-bottom: 1.6rem
+        }
+
+        .pd-btn-wish:hover {
+            border-color: var(--b);
+            background: var(--w2)
+        }
+
+        .pd-btn-wish svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--b);
+            fill: none
+        }
+
+        .pd-btn-wish.wishlisted svg {
+            fill: var(--b)
+        }
+
+        /* Guarantees strip */
+        .pd-guarantees {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--w3);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 1.8rem
+        }
+
+        .pd-guar {
+            background: var(--w2);
+            padding: .9rem .7rem;
+            text-align: center
+        }
+
+        .pd-guar-icon {
+            font-size: 1.2rem;
+            margin-bottom: .3rem
+        }
+
+        .pd-guar-label {
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--b3)
+        }
+
+        /* Accordion */
+        .pd-accord {
+            border-top: 1px solid var(--w3)
+        }
+
+        .pd-accord-item {
+            border-bottom: 1px solid var(--w3)
+        }
+
+        .pd-accord-head {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .82rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-align: left
+        }
+
+        .pd-accord-head svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--b);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            transition: transform .3s;
+            flex-shrink: 0
+        }
+
+        .pd-accord-item.open .pd-accord-head svg {
+            transform: rotate(45deg)
+        }
+
+        .pd-accord-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s ease
+        }
+
+        .pd-accord-item.open .pd-accord-body {
+            max-height: 500px
+        }
+
+        .pd-accord-content {
+            padding: .2rem 0 1.2rem;
+            font-size: .85rem;
+            line-height: 1.8;
+            color: var(--b3)
+        }
+
+        .pd-accord-content ul {
+            list-style: none;
+            padding: 0
+        }
+
+        .pd-accord-content ul li {
+            padding: .25rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem
+        }
+
+        .pd-accord-content ul li::before {
+            content: '—';
+            color: var(--b4);
+            flex-shrink: 0
+        }
+
+        /* Size guide */
+        .size-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .78rem;
+            margin-top: .5rem
+        }
+
+        .size-table th {
+            background: var(--b);
+            color: var(--w);
+            padding: .5rem .8rem;
+            text-align: left;
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .size-table td {
+            padding: .5rem .8rem;
+            border-bottom: 1px solid var(--w3);
+            color: var(--b2)
+        }
+
+        .size-table tr:nth-child(even) td {
+            background: var(--w2)
+        }
+
+        .size-table tr.highlight td {
+            background: rgba(10, 10, 10, .06);
+            font-weight: 600
+        }
+
+        /* Related products */
+        .pd-related {
+            padding: 4rem 5% 5rem;
+            background: var(--w2)
+        }
+
+        .pd-related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px
+        }
+
+        /* EDITORIAL / SALE */
+        .editorial {
+            background: var(--b);
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden
+        }
+
+        .editorial-grain {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+            pointer-events: none
+        }
+
+        .ed-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            position: relative
+        }
+
+        .ed-left .sec-eyebrow {
+            color: rgba(255, 255, 255, .4)
+        }
+
+        .ed-left .sec-h {
+            color: var(--w)
+        }
+
+        .ed-desc {
+            font-size: .9rem;
+            color: rgba(255, 255, 255, .5);
+            line-height: 1.8;
+            margin: 1.4rem 0 2rem;
+            max-width: 380px
+        }
+
+        .countdown {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem
+        }
+
+        .cd {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: 1rem 1.3rem;
+            text-align: center;
+            min-width: 72px
+        }
+
+        .cd-n {
+            font-family: var(--fn-d);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--w);
+            line-height: 1
+        }
+
+        .cd-l {
+            font-size: .55rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .35);
+            margin-top: .4rem
+        }
+
+        .ed-imgsgrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px
+        }
+
+        .ed-img {
+            position: relative;
+            border-radius: var(--r2);
+            overflow: hidden;
+            cursor: pointer
+        }
+
+        .ed-img img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            transition: transform .5s, filter .3s;
+            filter: brightness(.85)
+        }
+
+        .ed-img:hover img {
+            transform: scale(1.05);
+            filter: brightness(1)
+        }
+
+        .ed-img-tag {
+            position: absolute;
+            bottom: 14px;
+            left: 14px;
+            background: rgba(255, 255, 255, .92);
+            color: var(--b);
+            border-radius: 8px;
+            padding: .3rem .7rem;
+            font-size: .72rem;
+            font-weight: 700
+        }
+
+        .ed-img-disc {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #c4555a;
+            color: #fff;
+            border-radius: 99px;
+            padding: .28rem .75rem;
+            font-size: .65rem;
+            font-weight: 700
+        }
+
+        /* TESTIMONIALS */
+        .tgrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px
+        }
+
+        .tcard {
+            background: var(--w);
+            border: 1px solid var(--w3);
+            border-radius: var(--r2);
+            padding: 2rem;
+            position: relative;
+            transition: box-shadow .3s, transform .3s
+        }
+
+        .tcard:hover {
+            box-shadow: var(--sh2);
+            transform: translateY(-4px)
+        }
+
+        .tcard-qmark {
+            font-family: var(--fn-d);
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--w3);
+            line-height: .8;
+            margin-bottom: .8rem
+        }
+
+        .tcard-text {
+            font-size: .9rem;
+            line-height: 1.75;
+            color: var(--b2);
+            margin-bottom: 1.4rem;
+            font-style: italic
+        }
+
+        .tcard-stars {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 1.2rem
+        }
+
+        .tcard-stars svg {
+            width: 14px;
+            height: 14px;
+            fill: #f0b429;
+            stroke: none
+        }
+
+        .tcard-user {
+            display: flex;
+            align-items: center;
+            gap: .8rem
+        }
+
+        .tcard-ava {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover
+        }
+
+        .tcard-name {
+            font-weight: 600;
+            font-size: .88rem
+        }
+
+        .tcard-loc {
+            font-size: .72rem;
+            color: var(--b4);
+            margin-top: .1rem
+        }
+
+        .tcard-check {
+            font-size: .65rem;
+            color: #3d5c45;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: .2rem;
+            font-weight: 600
+        }
+
+        .tcard-check svg {
+            width: 12px;
+            height: 12px;
+            stroke: #3d5c45;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        /* INSTAGRAM */
+        .ig-sec {
+            padding: 80px 5%
+        }
+
+        .ig-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px
+        }
+
+        .ig-item {
+            aspect-ratio: 1;
+            position: relative;
+            border-radius: var(--r);
+            overflow: hidden;
+            cursor: pointer
+        }
+
+        .ig-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .4s, filter .3s;
+            filter: grayscale(20%)
+        }
+
+        .ig-item:hover img {
+            transform: scale(1.08);
+            filter: grayscale(0%)
+        }
+
+        .ig-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 10, .4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .3s
+        }
+
+        .ig-item:hover .ig-overlay {
+            opacity: 1
+        }
+
+        .ig-overlay svg {
+            width: 28px;
+            height: 28px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round
+        }
+
+        /* NEWSLETTER */
+        .news-sec {
+            background: var(--b);
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden
+        }
+
+        .news-deco {
+            position: absolute;
+            top: -120px;
+            right: -120px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .02);
+            pointer-events: none
+        }
+
+        .news-inner {
+            max-width: 560px;
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .news-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, .08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem
+        }
+
+        .news-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: rgba(255, 255, 255, .7);
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .news-h {
+            font-family: var(--fn-d);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--w);
+            letter-spacing: -.02em;
+            margin-bottom: .8rem
+        }
+
+        .news-p {
+            font-size: .88rem;
+            color: rgba(255, 255, 255, .5);
+            line-height: 1.8;
+            margin-bottom: 2rem
+        }
+
+        .news-form {
+            display: flex;
+            gap: 10px
+        }
+
+        .news-input {
+            flex: 1;
+            background: rgba(255, 255, 255, .08);
+            border: 1.5px solid rgba(255, 255, 255, .15);
+            border-radius: 99px;
+            padding: .72rem 1.4rem;
+            color: #fff;
+            font-size: .82rem;
+            font-family: var(--fn-b);
+            outline: none;
+            transition: border-color .2s
+        }
+
+        .news-input::placeholder {
+            color: rgba(255, 255, 255, .3)
+        }
+
+        .news-input:focus {
+            border-color: rgba(255, 255, 255, .4)
+        }
+
+        .news-btn {
+            background: var(--w);
+            color: var(--b);
+            border: none;
+            border-radius: 99px;
+            padding: .72rem 1.8rem;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: transform .2s
+        }
+
+        .news-btn:hover {
+            transform: scale(1.03)
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--b2);
+            padding: 5% 5% 2%
+        }
+
+        .fg {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem
+        }
+
+        .f-logo {
+            font-family: var(--fn-d);
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: .2em;
+            color: var(--w);
+            margin-bottom: .8rem
+        }
+
+        .f-logo em {
+            font-style: italic;
+            font-weight: 400
+        }
+
+        .f-about {
+            font-size: .82rem;
+            color: rgba(255, 255, 255, .4);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            max-width: 260px
+        }
+
+        .f-socials {
+            display: flex;
+            gap: 8px
+        }
+
+        .f-soc {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, .08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s
+        }
+
+        .f-soc:hover {
+            background: rgba(255, 255, 255, .18)
+        }
+
+        .f-soc svg {
+            width: 15px;
+            height: 15px;
+            stroke: rgba(255, 255, 255, .7);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round
+        }
+
+        .f-col h5 {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .4);
+            margin-bottom: 1rem
+        }
+
+        .f-col ul {
+            list-style: none
+        }
+
+        .f-col ul li {
+            margin-bottom: .55rem
+        }
+
+        .f-col ul li a {
+            font-size: .82rem;
+            color: rgba(255, 255, 255, .55);
+            transition: color .2s
+        }
+
+        .f-col ul li a:hover {
+            color: var(--w)
+        }
+
+        .f-bottom {
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            padding-top: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap
+        }
+
+        .f-bottom p {
+            font-size: .72rem;
+            color: rgba(255, 255, 255, .3);
+            letter-spacing: .08em
+        }
+
+        .pay-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .pay-chip {
+            background: rgba(255, 255, 255, .07);
+            color: rgba(255, 255, 255, .45);
+            border-radius: 6px;
+            padding: .28rem .65rem;
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase
+        }
+
+        /* CART DRAWER */
+        .veil {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .35);
+            z-index: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .35s
+        }
+
+        .veil.on {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 420px;
+            background: #fff;
+            z-index: 650;
+            transform: translateX(100%);
+            transition: transform .45s cubic-bezier(.4, 0, .2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--sh3)
+        }
+
+        .cart-drawer.on {
+            transform: translateX(0)
+        }
+
+        .cd-head {
+            padding: 1.4rem 1.6rem;
+            border-bottom: 1px solid var(--w3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .cd-head h3 {
+            font-family: var(--fn-d);
+            font-size: 1.4rem;
+            font-weight: 700
+        }
+
+        .cd-close {
+            background: none;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s
+        }
+
+        .cd-close:hover {
+            background: var(--w3)
+        }
+
+        .cd-close svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--b);
+            fill: none;
+            stroke-linecap: round
+        }
+
+        .cd-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.2rem 1.6rem
+        }
+
+        .cd-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: .6rem;
+            color: var(--b4)
+        }
+
+        .cd-empty-icon svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--b3);
+            fill: none;
+            stroke-width: 1.2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .cd-empty p {
+            font-size: .88rem
+        }
+
+        .cd-empty p:first-of-type {
+            font-family: var(--fn-d);
+            font-size: 1.1rem;
+            color: var(--b)
+        }
+
+        .ci {
+            display: flex;
+            gap: 1rem;
+            padding: .9rem 0;
+            border-bottom: 1px solid var(--w3)
+        }
+
+        .ci:last-child {
+            border-bottom: none
+        }
+
+        .ci-img {
+            width: 80px;
+            height: 96px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: var(--w2)
+        }
+
+        .ci-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top
+        }
+
+        .ci-info {
+            flex: 1;
+            min-width: 0
+        }
+
+        .ci-name {
+            font-family: var(--fn-d);
+            font-size: .96rem;
+            font-weight: 700;
+            margin-bottom: .2rem;
+            line-height: 1.2
+        }
+
+        .ci-var {
+            font-size: .7rem;
+            color: var(--b4);
+            margin-bottom: .35rem
+        }
+
+        .ci-price {
+            font-size: .9rem;
+            font-weight: 700;
+            margin-bottom: .5rem
+        }
+
+        .ci-ctrl {
+            display: flex;
+            align-items: center;
+            gap: .4rem
+        }
+
+        .ci-qbtn {
+            width: 26px;
+            height: 26px;
+            background: var(--w2);
+            border: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .ci-qbtn svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--b);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round
+        }
+
+        .ci-qty {
+            font-size: .85rem;
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center
+        }
+
+        .ci-del {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--b4);
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .ci-del svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .cd-foot {
+            padding: 1rem 1.6rem 1.5rem;
+            border-top: 1px solid var(--w3)
+        }
+
+        .promo-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem
+        }
+
+        .promo-field {
+            flex: 1;
+            border: 1.5px solid var(--w3);
+            border-radius: 10px;
+            padding: .5rem .9rem;
+            font-size: .8rem;
+            font-family: var(--fn-b);
+            outline: none;
+            background: #fff;
+            transition: border-color .2s
+        }
+
+        .promo-field:focus {
+            border-color: var(--b)
+        }
+
+        .promo-btn {
+            background: var(--b);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: .5rem 1rem;
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: background .2s
+        }
+
+        .promo-btn:hover {
+            background: var(--b3)
+        }
+
+        .cd-totals {
+            margin-bottom: 1.1rem
+        }
+
+        .cd-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .8rem;
+            color: var(--b3);
+            margin-bottom: .35rem
+        }
+
+        .cd-total-row.big {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--b);
+            margin-top: .6rem;
+            padding-top: .6rem;
+            border-top: 1px solid var(--w3)
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background: var(--b);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: .95rem;
+            font-size: .8rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background .2s, transform .15s
+        }
+
+        .btn-checkout:hover {
+            background: var(--b3);
+            transform: scale(1.01)
+        }
+
+        .btn-checkout svg {
+            width: 16px;
+            height: 16px;
+            stroke: #fff;
+            fill: none
+        }
+
+        /* CHECKOUT MODAL */
+        .modal-veil {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .55);
+            backdrop-filter: blur(4px);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s
+        }
+
+        .modal-veil.on {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 540px;
+            max-height: 92vh;
+            overflow-y: auto;
+            transform: scale(.95) translateY(12px);
+            transition: transform .35s cubic-bezier(.175, .885, .32, 1.275)
+        }
+
+        .modal-veil.on .modal {
+            transform: scale(1) translateY(0)
+        }
+
+        .modal-top {
+            padding: 1.4rem 1.6rem 1rem;
+            border-bottom: 1px solid var(--w3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 2
+        }
+
+        .modal-top h3 {
+            font-family: var(--fn-d);
+            font-size: 1.3rem;
+            font-weight: 700
+        }
+
+        .modal-top button {
+            background: none;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s
+        }
+
+        .modal-top button:hover {
+            background: var(--w3)
+        }
+
+        .modal-top button svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--b);
+            fill: none
+        }
+
+        .modal-body {
+            padding: 1.5rem 1.6rem
+        }
+
+        .mrow {
+            margin-bottom: 1rem
+        }
+
+        .mrow label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .68rem;
+            font-weight: 600;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--b3);
+            margin-bottom: .4rem
+        }
+
+        .mrow label svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--b3);
+            fill: none
+        }
+
+        .mrow input,
+        .mrow select,
+        .mrow textarea {
+            width: 100%;
+            border: 1.5px solid var(--w3);
+            border-radius: 10px;
+            padding: .65rem .9rem;
+            font-size: .86rem;
+            font-family: var(--fn-b);
+            background: #fff;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s
+        }
+
+        .mrow input:focus,
+        .mrow select:focus,
+        .mrow textarea:focus {
+            border-color: var(--b);
+            box-shadow: 0 0 0 3px rgba(10, 10, 10, .05)
+        }
+
+        .mrow textarea {
+            resize: vertical;
+            min-height: 72px
+        }
+
+        .m2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .8rem
+        }
+
+        .pay-opts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: .4rem
+        }
+
+        .popt {
+            border: 1.5px solid var(--w3);
+            border-radius: 10px;
+            padding: .6rem .4rem;
+            text-align: center;
+            cursor: pointer;
+            font-size: .72rem;
+            font-weight: 500;
+            transition: all .2s;
+            color: var(--b3)
+        }
+
+        .popt.on {
+            border-color: var(--b);
+            background: var(--b);
+            color: #fff;
+            font-weight: 700
+        }
+
+        .popt:hover:not(.on) {
+            border-color: var(--b4)
+        }
+
+        .mhr {
+            border: none;
+            border-top: 1px solid var(--w3);
+            margin: 1.2rem 0
+        }
+
+        .sum-title {
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--b3);
+            margin-bottom: .8rem
+        }
+
+        .sum-items {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            margin-bottom: .9rem
+        }
+
+        .sum-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: .82rem
+        }
+
+        .sum-item span:first-child {
+            color: var(--b3)
+        }
+
+        .sum-item span:last-child {
+            font-weight: 600
+        }
+
+        .sum-box {
+            background: var(--w2);
+            border-radius: 14px;
+            padding: .9rem 1.1rem
+        }
+
+        .sum-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: .82rem;
+            color: var(--b3);
+            margin-bottom: .35rem
+        }
+
+        .sum-line.total {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--b);
+            border-top: 1px solid var(--w3);
+            margin-top: .5rem;
+            padding-top: .5rem;
+            margin-bottom: 0
+        }
+
+        .btn-order {
+            width: 100%;
+            background: var(--b);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: .95rem;
+            font-size: .8rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background .2s, transform .15s;
+            margin-top: 1.2rem
+        }
+
+        .btn-order svg {
+            width: 16px;
+            height: 16px;
+            stroke: #fff;
+            fill: none
+        }
+
+        .btn-order:hover {
+            background: var(--b3);
+            transform: scale(1.01)
+        }
+
+        /* STRUK */
+        .struk-veil {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .65);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .35s
+        }
+
+        .struk-veil.on {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .struk {
+            position: relative;
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            max-height: 92vh;
+            overflow-y: auto;
+            transform: scale(.92) translateY(20px);
+            transition: transform .45s cubic-bezier(.175, .885, .32, 1.275);
+            font-family: 'Courier New', monospace
+        }
+
+        .struk-veil.on .struk {
+            transform: scale(1) translateY(0)
+        }
+
+        .zigzag-top {
+            height: 18px;
+            background: repeating-linear-gradient(135deg, #fff 0, #fff 8px, transparent 8px, transparent 16px), repeating-linear-gradient(-135deg, #fff 0, #fff 8px, transparent 8px, transparent 16px);
+            background-color: var(--w2)
+        }
+
+        .zigzag-bot {
+            height: 18px;
+            background: repeating-linear-gradient(45deg, #fff 0, #fff 8px, transparent 8px, transparent 16px), repeating-linear-gradient(-45deg, #fff 0, #fff 8px, transparent 8px, transparent 16px);
+            background-color: var(--w2)
+        }
+
+        .struk-inner {
+            padding: 1.6rem 1.8rem;
+            background: #fff
+        }
+
+        .s-brand {
+            text-align: center;
+            margin-bottom: .8rem
+        }
+
+        .s-brand-name {
+            font-family: var(--fn-d);
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: .2em;
+            color: var(--b)
+        }
+
+        .s-brand-name em {
+            font-style: italic;
+            font-weight: 400
+        }
+
+        .s-brand-sub {
+            font-size: .58rem;
+            letter-spacing: .35em;
+            text-transform: uppercase;
+            color: var(--b4);
+            font-family: var(--fn-b)
+        }
+
+        .s-dash {
+            border: none;
+            border-top: 1.5px dashed #ccc;
+            margin: .9rem 0
+        }
+
+        .s-solid {
+            border: none;
+            border-top: 1.5px solid #ddd;
+            margin: .9rem 0
+        }
+
+        .s-meta {
+            font-size: .74rem;
+            color: #555;
+            line-height: 1.8
+        }
+
+        .s-meta-row {
+            display: flex;
+            justify-content: space-between;
+            gap: .5rem
+        }
+
+        .s-meta-row strong {
+            color: var(--b)
+        }
+
+        .s-section-label {
+            font-size: .6rem;
+            font-weight: 700;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: #999;
+            margin: .8rem 0 .4rem;
+            font-family: var(--fn-b)
+        }
+
+        .s-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: .5rem;
+            margin-bottom: .45rem;
+            font-size: .8rem
+        }
+
+        .s-item-name {
+            flex: 1;
+            color: #333;
+            line-height: 1.4
+        }
+
+        .s-item-qty {
+            color: #888;
+            white-space: nowrap;
+            margin: 0 .4rem
+        }
+
+        .s-item-price {
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .s-sub-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .78rem;
+            color: #666;
+            margin-bottom: .3rem
+        }
+
+        .s-total-band {
+            background: var(--b);
+            color: #fff;
+            border-radius: 10px;
+            padding: .85rem 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: .8rem 0
+        }
+
+        .s-total-band .lbl {
+            font-size: .68rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            opacity: .7
+        }
+
+        .s-total-band .amt {
+            font-family: var(--fn-d);
+            font-size: 1.4rem;
+            font-weight: 700
+        }
+
+        .s-barcode {
+            text-align: center;
+            margin: .6rem 0
+        }
+
+        .s-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 2px;
+            height: 46px;
+            margin-bottom: .35rem
+        }
+
+        .s-bar {
+            background: var(--b);
+            border-radius: 1px
+        }
+
+        .s-barnum {
+            font-size: .6rem;
+            letter-spacing: .1em;
+            color: #999
+        }
+
+        .s-thanks {
+            text-align: center;
+            padding: .4rem 0
+        }
+
+        .s-thanks strong {
+            font-family: var(--fn-d);
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: .4rem
+        }
+
+        .s-thanks p {
+            font-size: .75rem;
+            color: #666;
+            line-height: 1.7
+        }
+
+        .struk-btns {
+            display: flex;
+            gap: .6rem;
+            padding: 1.2rem 1.8rem;
+            background: var(--w2)
+        }
+
+        .s-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            border-radius: 10px;
+            padding: .65rem;
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity .2s
+        }
+
+        .s-btn:hover {
+            opacity: .8
+        }
+
+        .s-btn.print {
+            background: var(--b);
+            color: #fff
+        }
+
+        .s-btn.share {
+            background: var(--b2);
+            color: #fff
+        }
+
+        .s-btn.close {
+            background: var(--w3);
+            color: var(--b2)
+        }
+
+        .s-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(70px);
+            z-index: 2000;
+            background: var(--b);
+            color: #fff;
+            border-radius: 99px;
+            padding: .65rem 1.4rem;
+            font-size: .78rem;
+            font-weight: 500;
+            letter-spacing: .04em;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .2);
+            pointer-events: none;
+            transition: transform .42s cubic-bezier(.175, .885, .32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap
+        }
+
+        .toast.on {
+            transform: translateX(-50%) translateY(0)
+        }
+
+        /* MOBILE NAV DRAWER */
+        .mob-nav {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: #fff;
+            z-index: 690;
+            border-bottom: 1px solid var(--w3);
+            transform: translateY(-110%);
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: var(--sh2)
+        }
+
+        .mob-nav.on {
+            transform: translateY(0)
+        }
+
+        .mob-nav ul {
+            list-style: none
+        }
+
+        .mob-nav ul li a {
+            display: block;
+            padding: 1rem 5%;
+            font-size: .8rem;
+            font-weight: 500;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--b3);
+            border-bottom: 1px solid var(--w3);
+            transition: background .2s, color .2s;
+            cursor: pointer
+        }
+
+        .mob-nav ul li a:hover,
+        .mob-nav ul li a.active {
+            background: var(--w2);
+            color: var(--b)
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:1100px) {
+            .pgrid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .bento {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .bento-card:first-child {
+                grid-column: 1/3
+            }
+
+            .bento-card:nth-child(4) {
+                grid-column: 3/4;
+                grid-row: 1/2
+            }
+
+            .feat-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .tgrid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .ig-strip {
+                grid-template-columns: repeat(4, 1fr)
+            }
+
+            .ig-item:last-child {
+                display: none
+            }
+
+            .fg {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .nav-links a {
+                padding: 0 .8rem;
+                font-size: .62rem
+            }
+
+            .pd-related-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media(max-width:900px) {
+            .hero {
+                grid-template-columns: 1fr
+            }
+
+            .hero-right {
+                height: 50vw;
+                max-height: 400px
+            }
+
+            .nav-links {
+                display: none
+            }
+
+            .hamburger {
+                display: flex
+            }
+
+            .ed-grid {
+                grid-template-columns: 1fr
+            }
+
+            .tgrid {
+                grid-template-columns: 1fr
+            }
+
+            .pd-main {
+                grid-template-columns: 1fr;
+                gap: 2rem
+            }
+
+            .pd-gallery {
+                position: static
+            }
+
+            .pd-related-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:640px) {
+            .sec {
+                padding: 64px 4%
+            }
+
+            .pgrid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px
+            }
+
+            .bento {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto auto
+            }
+
+            .bento-card:first-child {
+                grid-column: 1/3;
+                grid-row: 1
+            }
+
+            .bento-card:nth-child(4) {
+                grid-column: 1/3;
+                grid-row: auto
+            }
+
+            .feat-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0
+            }
+
+            .tgrid {
+                grid-template-columns: 1fr
+            }
+
+            .ig-strip {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .ig-item:nth-child(n+4) {
+                display: none
+            }
+
+            .fg {
+                grid-template-columns: 1fr
+            }
+
+            .news-form {
+                flex-direction: column
+            }
+
+            .news-input,
+            .news-btn {
+                border-radius: 12px;
+                width: 100%
+            }
+
+            .cart-drawer {
+                width: 100%
+            }
+
+            .modal {
+                max-width: 100%;
+                border-radius: 20px 20px 0 0
+            }
+
+            .modal-veil {
+                align-items: flex-end
+            }
+
+            .m2col {
+                grid-template-columns: 1fr
+            }
+
+            .struk {
+                max-width: 100%
+            }
+
+            .hero-stats {
+                gap: 1.4rem
+            }
+
+            .pd-guarantees {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .pd-related-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media print {
+            body * {
+                visibility: hidden
+            }
+
+            .struk,
+            .struk * {
+                visibility: visible
+            }
+
+            .struk {
+                position: fixed;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%)
+            }
+
+            .struk-btns {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <div id="loader">
+        <div class="loader-brand">NOIR<em>.</em></div>
+        <div class="loader-bar">
+            <div class="loader-prog"></div>
+        </div>
+    </div>
+
+    <!-- SEARCH OVERLAY -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-box">
+            <input class="search-input" id="searchInput" placeholder="Cari koleksi…" autocomplete="off" />
+            <button class="search-close" onclick="closeSearch()">
+                <svg viewBox="0 0 24 24" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+        </div>
+        <div class="search-hint">Ketik nama produk, kategori, atau harga</div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav-logo" onclick="goPage('home')">NOIR<em>.</em></div>
+        <ul class="nav-links">
+            <li><a onclick="goPage('home')" data-page="home" class="active">Home</a></li>
+            <li><a onclick="goPage('koleksi')" data-page="koleksi">Koleksi</a></li>
+            <li><a onclick="goPage('sale')" data-page="sale">Sale</a></li>
+            <li><a onclick="goPage('ulasan')" data-page="ulasan">Ulasan</a></li>
+            <li><a onclick="goPage('instagram')" data-page="instagram">Instagram</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="nav-icon-btn" id="openSearch" title="Cari">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+            </button>
+            <button class="nav-icon-btn" id="wishNavBtn" title="Wishlist">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+            </button>
+            <button class="nav-icon-btn" id="openCart" title="Keranjang">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                <span class="nav-cart-bubble" id="cartCount">0</span>
+            </button>
+            <button class="nav-cta" onclick="goPage('koleksi')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+                Shop Now
+            </button>
+            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <div class="mob-nav" id="mobNav">
+        <ul>
+            <li><a onclick="goPage('home');closeMobNav()" data-mob="home" class="active">Home</a></li>
+            <li><a onclick="goPage('koleksi');closeMobNav()" data-mob="koleksi">Koleksi</a></li>
+            <li><a onclick="goPage('sale');closeMobNav()" data-mob="sale">Sale</a></li>
+            <li><a onclick="goPage('ulasan');closeMobNav()" data-mob="ulasan">Ulasan</a></li>
+            <li><a onclick="goPage('instagram');closeMobNav()" data-mob="instagram">Instagram</a></li>
+        </ul>
+    </div>
+
+    <!-- PAGE: HOME -->
+    <div class="page active" id="page-home">
+        <div class="page-inner">
+            <section class="hero">
+                <div class="hero-left">
+                    <div class="hero-left-grain"></div>
+                    <div class="hero-season">New Season 2026</div>
+                    <h1 class="hero-title">Dress<br><span class="italic">to</span><span class="outline">Impress</span>
+                    </h1>
+                    <p class="hero-desc">Koleksi fashion editorial premium — didesain untuk wanita modern yang percaya
+                        diri. Setiap helai menceritakan keanggunan.</p>
+                    <div class="hero-btns">
+                        <button class="btn-w" onclick="goPage('koleksi')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Belanja Sekarang
+                        </button>
+                        <button class="btn-wo" onclick="openSearchFn()">Cari Produk</button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="h-stat">
+                            <div class="n">18K+</div>
+                            <div class="l">Pelanggan</div>
+                        </div>
+                        <div class="h-stat">
+                            <div class="n">2.6K</div>
+                            <div class="l">Produk</div>
+                        </div>
+                        <div class="h-stat">
+                            <div class="n">4.9★</div>
+                            <div class="l">Rating</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-right">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=85"
+                        alt="Hero Fashion" />
+                    <div class="hero-right-overlay"></div>
+                    <span class="hero-tag-top">✦ New Arrival</span>
+                    <div class="hero-float-card">
+                        <div class="hfc-label">Featured</div>
+                        <div class="hfc-name">Monochrome Set</div>
+                        <div class="hfc-price">Rp 320.000</div>
+                        <button class="hfc-add" onclick="openProductDetail(5)">Lihat Detail</button>
+                    </div>
+                </div>
+            </section>
+            <div class="ticker">
+                <div class="ticker-inner">
+                    <span class="t-item"><span class="t-diamond"></span>Free Ongkir Se-Indonesia</span>
+                    <span class="t-item"><span class="t-diamond"></span>New Collection Weekly</span>
+                    <span class="t-item"><span class="t-diamond"></span>Premium Fabric Quality</span>
+                    <span class="t-item"><span class="t-diamond"></span>Up to 50% Off Sale</span>
+                    <span class="t-item"><span class="t-diamond"></span>Same Day Delivery Palembang</span>
+                    <span class="t-item"><span class="t-diamond"></span>100% Original Guarantee</span>
+                    <span class="t-item"><span class="t-diamond"></span>Easy Returns & Exchange</span>
+                    <span class="t-item"><span class="t-diamond"></span>Free Ongkir Se-Indonesia</span>
+                    <span class="t-item"><span class="t-diamond"></span>New Collection Weekly</span>
+                    <span class="t-item"><span class="t-diamond"></span>Premium Fabric Quality</span>
+                    <span class="t-item"><span class="t-diamond"></span>Up to 50% Off Sale</span>
+                    <span class="t-item"><span class="t-diamond"></span>Same Day Delivery Palembang</span>
+                    <span class="t-item"><span class="t-diamond"></span>100% Original Guarantee</span>
+                    <span class="t-item"><span class="t-diamond"></span>Easy Returns & Exchange</span>
+                </div>
+            </div>
+            <section class="feat-sec">
+                <div class="feat-grid">
+                    <div class="feat-card">
+                        <div class="feat-icon-wrap"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="1" y="3" width="15" height="13" rx="2" />
+                                <path d="M16 8h4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-4" />
+                                <circle cx="5.5" cy="18.5" r="2.5" />
+                                <circle cx="18.5" cy="18.5" r="2.5" />
+                            </svg></div>
+                        <div class="feat-title">Free Delivery</div>
+                        <p class="feat-desc">Gratis ongkir ke seluruh Indonesia untuk setiap pembelian minimal Rp
+                            100.000</p>
+                    </div>
+                    <div class="feat-card">
+                        <div class="feat-icon-wrap"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                            </svg></div>
+                        <div class="feat-title">Premium Quality</div>
+                        <p class="feat-desc">Setiap produk melalui quality check ketat — bahan pilihan bergaransi
+                            keaslian</p>
+                    </div>
+                    <div class="feat-card">
+                        <div class="feat-icon-wrap"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="1 4 1 10 7 10" />
+                                <path d="M3.51 15a9 9 0 1 0 .49-4.95" />
+                            </svg></div>
+                        <div class="feat-title">Easy Returns</div>
+                        <p class="feat-desc">Tukar ukuran atau kembalikan produk gratis dalam 7 hari tanpa pertanyaan
+                        </p>
+                    </div>
+                    <div class="feat-card">
+                        <div class="feat-icon-wrap"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg></div>
+                        <div class="feat-title">24/7 Support</div>
+                        <p class="feat-desc">Customer service siap membantu kapan saja via WhatsApp, chat, dan email</p>
+                    </div>
+                </div>
+            </section>
+            <section class="news-sec">
+                <div class="news-deco"></div>
+                <div class="news-inner">
+                    <div class="news-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg></div>
+                    <h2 class="news-h">Stay in the Loop</h2>
+                    <p class="news-p">Subscribe dan dapatkan voucher Rp 50.000 untuk pembelian pertama. Plus akses early
+                        ke koleksi eksklusif.</p>
+                    <div class="news-form">
+                        <input type="email" class="news-input" placeholder="your@email.com" id="newsEmail" />
+                        <button class="news-btn" id="newsBtn">Subscribe</button>
+                    </div>
+                </div>
+            </section>
+            <footer>
+                <div class="fg">
+                    <div>
+                        <div class="f-logo">NOIR<em>.</em></div>
+                        <p class="f-about">Premium fashion editorial store. Menghadirkan koleksi yang terinspirasi dari
+                            runway dunia untuk wanita Indonesia modern.</p>
+                        <div class="f-socials">
+                            <a href="#" class="f-soc"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" />
+                                    <circle cx="12" cy="12" r="5" />
+                                    <circle cx="17.5" cy="6.5" r="1" />
+                                </svg></a>
+                            <a href="#" class="f-soc"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                    <path
+                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                                </svg></a>
+                            <a href="#" class="f-soc"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                                </svg></a>
+                        </div>
+                    </div>
+                    <div class="f-col">
+                        <h5>Shop</h5>
+                        <ul>
+                            <li><a href="#">New Arrivals</a></li>
+                            <li><a href="#">Best Sellers</a></li>
+                            <li><a href="#">Dress</a></li>
+                            <li><a href="#">Blouse</a></li>
+                            <li><a href="#">Outer & Jaket</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                    <div class="f-col">
+                        <h5>Help</h5>
+                        <ul>
+                            <li><a href="#">Track Order</a></li>
+                            <li><a href="#">Size Guide</a></li>
+                            <li><a href="#">Returns</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="f-col">
+                        <h5>Contact</h5>
+                        <ul>
+                            <li><a href="#">📱 0812-3456-7890</a></li>
+                            <li><a href="#">✉ hello@noir.store</a></li>
+                            <li><a href="#">📍 Palembang, Sumsel</a></li>
+                            <li><a href="#">🕐 Mon–Sat 09–21 WIB</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="f-bottom">
+                    <p>© 2026 NOIR. All rights reserved.</p>
+                    <div class="pay-chips"><span class="pay-chip">GoPay</span><span class="pay-chip">OVO</span><span
+                            class="pay-chip">Dana</span><span class="pay-chip">BCA</span><span
+                            class="pay-chip">COD</span></div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- PAGE: KOLEKSI -->
+    <div class="page" id="page-koleksi">
+        <div class="page-inner">
+            <section class="sec products-sec">
+                <div class="row-top">
+                    <div>
+                        <span class="sec-eyebrow">Terpilih</span>
+                        <h2 class="sec-h">Koleksi <em>Terbaru</em></h2>
+                    </div>
+                    <a class="link-more" href="#">Lihat Semua <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg></a>
+                </div>
+                <div class="filters" id="filterBar"></div>
+                <div class="pgrid" id="prodGrid"></div>
+            </section>
+        </div>
+    </div>
+
+    <!-- PAGE: PRODUCT DETAIL -->
+    <div class="page" id="page-detail">
+        <div class="page-inner" id="detailInner"></div>
+    </div>
+
+    <!-- PAGE: SALE -->
+    <div class="page" id="page-sale">
+        <div class="page-inner">
+            <section class="editorial" style="min-height:calc(100vh - 64px);display:flex;align-items:center;">
+                <div style="width:100%;position:relative;">
+                    <div class="editorial-grain"></div>
+                    <div class="ed-grid">
+                        <div class="ed-left">
+                            <span class="sec-eyebrow">Flash Sale</span>
+                            <h2 class="sec-h">Up to <em>50%</em><br>Off Today</h2>
+                            <p class="ed-desc">Penawaran terbatas — hanya berlaku hingga countdown berakhir. Jangan
+                                sampai kehabisan koleksi favoritmu.</p>
+                            <div class="countdown">
+                                <div class="cd">
+                                    <div class="cd-n" id="cdD">03</div>
+                                    <div class="cd-l">Hari</div>
+                                </div>
+                                <div class="cd">
+                                    <div class="cd-n" id="cdH">14</div>
+                                    <div class="cd-l">Jam</div>
+                                </div>
+                                <div class="cd">
+                                    <div class="cd-n" id="cdM">28</div>
+                                    <div class="cd-l">Menit</div>
+                                </div>
+                                <div class="cd">
+                                    <div class="cd-n" id="cdS">45</div>
+                                    <div class="cd-l">Detik</div>
+                                </div>
+                            </div>
+                            <button class="btn-w" onclick="showToast('🛍 Pilih produk flash sale di sebelah kanan!')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                Shop Sale
+                            </button>
+                        </div>
+                        <div class="ed-imgsgrid">
+                            <div class="ed-img" onclick="openProductDetail(2)">
+                                <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80"
+                                    alt="Blazer" />
+                                <div class="ed-img-tag">Rp 285.000</div>
+                                <div class="ed-img-disc">-45%</div>
+                            </div>
+                            <div class="ed-img" onclick="openProductDetail(3)">
+                                <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=500&q=80"
+                                    alt="Dress" />
+                                <div class="ed-img-tag">Rp 199.000</div>
+                                <div class="ed-img-disc">-30%</div>
+                            </div>
+                            <div class="ed-img" onclick="openProductDetail(1)">
+                                <img src="https://images.unsplash.com/photo-1551803091-e20673f15770?w=500&q=80"
+                                    alt="Blouse" />
+                                <div class="ed-img-tag">Rp 145.000</div>
+                                <div class="ed-img-disc">-50%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- PAGE: ULASAN -->
+    <div class="page" id="page-ulasan">
+        <div class="page-inner">
+            <section class="sec testi-sec">
+                <div class="row-top">
+                    <div><span class="sec-eyebrow">Testimoni</span>
+                        <h2 class="sec-h">Kata <em>Mereka</em></h2>
+                    </div>
+                </div>
+                <div class="tgrid">
+                    <div class="tcard">
+                        <div class="tcard-qmark">"</div>
+                        <p class="tcard-text">Kualitas baju NOIR beda banget dari yang lain. Jahitannya rapi, bahan
+                            premium, dan tampilannya persis kayak foto. Udah order 5x dan gak pernah kecewa!</p>
+                        <div class="tcard-stars"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg></div>
+                        <div class="tcard-user"><img class="tcard-ava"
+                                src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&q=80" alt="" />
+                            <div>
+                                <div class="tcard-name">Siti Rahmah</div>
+                                <div class="tcard-loc">Palembang, Sumsel</div>
+                                <div class="tcard-check"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>Terverifikasi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tcard">
+                        <div class="tcard-qmark">"</div>
+                        <p class="tcard-text">Suka banget sama konsep hitam-putih NOIR. Elegan, timeless, dan cocok
+                            dipakai ke mana-mana. Dress-nya pas banget di badan, gak perlu alterasi lagi.</p>
+                        <div class="tcard-stars"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg></div>
+                        <div class="tcard-user"><img class="tcard-ava"
+                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="" />
+                            <div>
+                                <div class="tcard-name">Nadia Putri</div>
+                                <div class="tcard-loc">Jakarta Selatan</div>
+                                <div class="tcard-check"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>Terverifikasi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tcard">
+                        <div class="tcard-qmark">"</div>
+                        <p class="tcard-text">CS NOIR super responsif dan pengiriman kilat! Packaging-nya juga aesthetic
+                            banget, berasa beli dari brand internasional. Definitely my go-to fashion store!</p>
+                        <div class="tcard-stars"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg></div>
+                        <div class="tcard-user"><img class="tcard-ava"
+                                src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&q=80" alt="" />
+                            <div>
+                                <div class="tcard-name">Ayu Maharani</div>
+                                <div class="tcard-loc">Bandung, Jawa Barat</div>
+                                <div class="tcard-check"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>Terverifikasi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- PAGE: INSTAGRAM -->
+    <div class="page" id="page-instagram">
+        <div class="page-inner">
+            <section class="ig-sec">
+                <div class="row-top">
+                    <div><span class="sec-eyebrow">@noir.store</span>
+                        <h2 class="sec-h">Follow Our <em>Journey</em></h2>
+                    </div>
+                    <a class="link-more" href="#">Instagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg></a>
+                </div>
+                <div class="ig-strip">
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img src="https://images.unsplash.com/photo-1551803091-e20673f15770?w=400&q=80"
+                            alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                </div>
+                <div class="ig-strip" style="margin-top:14px">
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img src="https://images.unsplash.com/photo-1544923246-77307dd654cb?w=400&q=80"
+                            alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                    <div class="ig-item"><img
+                            src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80" alt="" />
+                        <div class="ig-overlay"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></div>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:3rem">
+                    <a href="https://www.instagram.com/noir.store08?igsh=NzVtMG5ud2phcnZ0" target="_blank" class="btn-w"
+                        style="display:inline-flex;background:var(--b);color:#fff;border-radius:99px;padding:.75rem 2.5rem;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;gap:8px;text-decoration:none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" />
+                            <circle cx="12" cy="12" r="5" />
+                            <circle cx="17.5" cy="6.5" r="1" />
+                        </svg>
+                        Ikuti @noir.store08 
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div class="veil" id="veil" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cd-head">
+            <h3>Shopping Bag</h3>
+            <button class="cd-close" onclick="closeCart()"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg></button>
+        </div>
+        <div class="cd-body" id="cartBody"></div>
+        <div class="cd-foot" id="cartFoot" style="display:none;">
+            <div class="promo-row"><input class="promo-field" id="promoIn" placeholder="Kode promo…" /><button
+                    class="promo-btn" onclick="applyPromo()">Pakai</button></div>
+            <div class="cd-totals">
+                <div class="cd-total-row"><span>Subtotal</span><span id="cSub">Rp 0</span></div>
+                <div class="cd-total-row"><span>Ongkos kirim</span><span
+                        style="color:#3d5c45;font-weight:600;">GRATIS</span></div>
+                <div class="cd-total-row" id="discRow" style="display:none;"><span>Diskon</span><span id="discAmt"
+                        style="color:#c4555a;font-weight:600;"></span></div>
+                <div class="cd-total-row big"><span>Total</span><span id="cTotal">Rp 0</span></div>
+            </div>
+            <button class="btn-checkout" onclick="openCheckout()"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>Checkout</button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div class="modal-veil" id="checkoutModal">
+        <div class="modal">
+            <div class="modal-top">
+                <h3>Checkout</h3><button onclick="closeCheckout()"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>Nama Lengkap</label><input type="text" id="cName" placeholder="Contoh: Siti Rahmah" />
+                </div>
+                <div class="m2col">
+                    <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.71a16 16 0 0 0 6 6l.81-.81a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z" />
+                            </svg>WhatsApp</label><input type="tel" id="cPhone" placeholder="08xxxxxxxxxx" /></div>
+                    <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>Email</label><input type="email" id="cEmail" placeholder="email@kamu.com" /></div>
+                </div>
+                <div class="mrow"><label><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>Alamat Lengkap</label><textarea id="cAddr"
+                        placeholder="Jl. Merdeka No.12, RT 03/RW 04…"></textarea></div>
+                <div class="m2col">
+                    <div class="mrow"><label>Kota</label><input type="text" id="cCity" placeholder="Palembang" /></div>
+                    <div class="mrow"><label>Kode Pos</label><input type="text" id="cZip" placeholder="30111" /></div>
+                </div>
+                <div class="mrow"><label>Ekspedisi</label>
+                    <select id="cEksp">
+                        <option value="jne">JNE Regular (2–3 hari) · Gratis</option>
+                        <option value="jnt">J&T Express (1–2 hari) · Gratis</option>
+                        <option value="sicepat">SiCepat (1–2 hari) · Gratis</option>
+                        <option value="sameday">Same Day Palembang · Gratis</option>
+                    </select>
+                </div>
+                <div class="mrow"><label>Metode Pembayaran</label>
+                    <div class="pay-opts" id="payOpts">
+                        <div class="popt on" data-p="gopay" onclick="selPay(this)">GoPay</div>
+                        <div class="popt" data-p="ovo" onclick="selPay(this)">OVO</div>
+                        <div class="popt" data-p="dana" onclick="selPay(this)">Dana</div>
+                        <div class="popt" data-p="bca" onclick="selPay(this)">BCA</div>
+                        <div class="popt" data-p="mandiri" onclick="selPay(this)">Mandiri</div>
+                        <div class="popt" data-p="cod" onclick="selPay(this)">COD</div>
+                    </div>
+                </div>
+                <hr class="mhr" />
+                <div class="sum-title">Ringkasan Pesanan</div>
+                <div class="sum-items" id="sumItems"></div>
+                <div class="sum-box">
+                    <div class="sum-line"><span>Subtotal</span><span id="mSub">Rp 0</span></div>
+                    <div class="sum-line"><span>Ongkos kirim</span><span
+                            style="color:#3d5c45;font-weight:600;">GRATIS</span></div>
+                    <div class="sum-line" id="mDiscRow" style="display:none;"><span>Diskon</span><span id="mDisc"
+                            style="color:#c4555a;"></span></div>
+                    <div class="sum-line total"><span>Total Bayar</span><span id="mTotal">Rp 0</span></div>
+                </div>
+                <button class="btn-order" onclick="placeOrder()"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>Konfirmasi Pesanan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STRUK -->
+    <div class="struk-veil" id="strukVeil">
+        <div class="struk" id="strukEl">
+            <div class="zigzag-top"></div>
+            <div class="struk-inner" id="strukInner"></div>
+            <div class="zigzag-bot"></div>
+            <div class="struk-btns">
+                <button class="s-btn print" onclick="window.print()"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 6 2 18 2 18 9" />
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                        <rect x="6" y="14" width="12" height="8" />
+                    </svg>Cetak</button>
+                <button class="s-btn share" onclick="showToast('📤 Link struk disalin!')"><svg viewBox="0 0 24 24"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                        <polyline points="16 6 12 2 8 6" />
+                        <line x1="12" y1="2" x2="12" y2="15" />
+                    </svg>Bagikan</button>
+                <button class="s-btn close" onclick="closeStruk()"><svg viewBox="0 0 24 24" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toastEl"></div>
+
+    <script>
+        /* ════ PAGE SYSTEM ════ */
+        function goPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + id);
+            if (target) {
+                target.classList.add('active');
+                const inner = target.querySelector('.page-inner');
+                if (inner) { inner.style.animation = 'none'; requestAnimationFrame(() => { inner.style.animation = ''; }); }
+            }
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.classList.toggle('active', a.dataset.page === id);
+            });
+            document.querySelectorAll('[data-mob]').forEach(a => {
+                a.classList.toggle('active', a.dataset.mob === id);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPageFilter(cat) {
+            document.querySelectorAll('.flt').forEach(b => {
+                b.classList.toggle('on', b.dataset.f === cat);
+            });
+            renderProds(cat);
+            goPage('koleksi');
+        }
+
+        /* LOADER */
+        window.addEventListener('load', () => {
+            setTimeout(() => { document.getElementById('loader').classList.add('hide'); }, 1900);
+        });
+
+        /* CURSOR */
+        const cur = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
+        document.addEventListener('mousemove', e => {
+            cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
+            setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 60);
+        });
+        document.querySelectorAll('button,a,.pcard,.bento-card,.ig-item,.ed-img').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+        });
+
+        /* HAMBURGER */
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('mobNav').classList.toggle('on');
+        });
+        function closeMobNav() { document.getElementById('mobNav').classList.remove('on'); }
+
+        /* ════ PRODUCTS DATA ════ */
+        const PRODS = [
+            {
+                id: 1, name: 'Minimal White Shirt', sub: 'Cotton Blend', cat: 'blouse', price: 165000, ori: 0, flag: 'new',
+                col: ['#fff', '#e8e8e8', '#1a1a1a'], colNames: ['White', 'Light Grey', 'Charcoal'],
+                stars: 4.8, sold: 1820,
+                img: 'https://images.unsplash.com/photo-1551803091-e20673f15770?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1551803091-e20673f15770?w=800&q=85',
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=85',
+                    'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=800&q=85',
+                    'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+                soldout: ['XXL'],
+                stock: 42,
+                desc: 'Kemeja putih minimalis yang menjadi wardrobe essential setiap wanita modern. Dibuat dari cotton blend berkualitas tinggi yang nyaman dipakai seharian — breathable, tidak mudah kusut, dan tetap tampak fresh.',
+                material: '100% Cotton Blend, 180 GSM',
+                care: 'Cuci tangan atau mesin 30°C. Jangan diperas. Setrika suhu sedang.',
+                fit: 'Regular fit. Model 168cm memakai ukuran S.',
+                sku: 'NR-BL-001-2026',
+                reviews: [{ name: 'Reza A.', loc: 'Jakarta', text: 'Bahannya adem banget, gak panas sama sekali. Fit-nya perfect!', stars: 5 },
+                { name: 'Mira S.', loc: 'Surabaya', text: 'Warnanya bersih, jahitan rapi. Udah repeat order 3x.', stars: 5 },
+                { name: 'Dian P.', loc: 'Palembang', text: 'Cocok banget buat kerja, simple tapi tetap elegan.', stars: 4 }]
+            },
+            {
+                id: 2, name: 'Structured Blazer', sub: 'Premium Wool', cat: 'outer', price: 385000, ori: 550000, flag: 'sale',
+                col: ['#0a0a0a', '#555', '#fff'], colNames: ['Black', 'Charcoal', 'Ivory'],
+                stars: 4.9, sold: 640,
+                img: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=85',
+                    'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=800&q=85',
+                    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=85',
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                soldout: ['XS'],
+                stock: 18,
+                desc: 'Blazer structured dengan potongan tailored yang mempertegas siluet. Bahan premium wool blend memberikan kesan mewah sekaligus nyaman. Cocok untuk meeting, acara formal, hingga casual day out.',
+                material: '65% Wool, 35% Polyester Blend',
+                care: 'Dry clean only. Simpan dengan hanger untuk menjaga bentuk.',
+                fit: 'Slim fit. Model 168cm memakai ukuran S.',
+                sku: 'NR-OT-002-2026',
+                reviews: [{ name: 'Sandra K.', loc: 'Bandung', text: 'Blazer paling worth it yang pernah saya beli. Bahannya berat di tangan, sangat premium.', stars: 5 },
+                { name: 'Lina M.', loc: 'Jakarta', text: 'Fit-nya sempurna, jahitannya sangat detail. Puas banget!', stars: 5 },
+                { name: 'Citra R.', loc: 'Semarang', text: 'Sedikit mahal tapi worth it untuk kualitas segini.', stars: 4 }]
+            },
+            {
+                id: 3, name: 'Flowy Midi Dress', sub: 'Linen Rayon', cat: 'dress', price: 275000, ori: 0, flag: 'hot',
+                col: ['#fff', '#c8c8c8', '#2d2d2d'], colNames: ['White', 'Grey', 'Dark'],
+                stars: 4.9, sold: 2100,
+                img: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=85',
+                    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=85',
+                    'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=85',
+                    'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+                soldout: [],
+                stock: 87,
+                desc: 'Midi dress dengan siluet flowy yang anggun. Bahan linen rayon terasa ringan dan breathable — ideal untuk cuaca tropis Indonesia. Detail potongan A-line memberikan kesan feminin sempurna untuk berbagai kesempatan.',
+                material: '55% Linen, 45% Rayon, 140 GSM',
+                care: 'Cuci tangan atau mesin delicate 30°C. Angin-anginkan, jangan dijemur langsung di bawah matahari.',
+                fit: 'Regular fit. Model 168cm memakai ukuran M.',
+                sku: 'NR-DR-003-2026',
+                reviews: [{ name: 'Putri W.', loc: 'Palembang', text: 'Baju favoritku! Adem banget dan jatuhnya bagus di badan.', stars: 5 },
+                { name: 'Maya L.', loc: 'Yogyakarta', text: 'Best dress ever! Udah dipakai ke kondangan dan dapet banyak pujian.', stars: 5 },
+                { name: 'Rina T.', loc: 'Medan', text: 'Bahannya tipis tapi tidak transparan, sangat nyaman.', stars: 5 }]
+            },
+            {
+                id: 4, name: 'Wide Leg Trousers', sub: 'High Waist', cat: 'celana', price: 245000, ori: 320000, flag: 'sale',
+                col: ['#0a0a0a', '#888', '#fff'], colNames: ['Black', 'Grey', 'Cream'],
+                stars: 4.7, sold: 980,
+                img: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=85',
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=85',
+                    'https://images.unsplash.com/photo-1551803091-e20673f15770?w=800&q=85',
+                    'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                soldout: ['XS', 'XL'],
+                stock: 24,
+                desc: 'Wide leg trousers high waist yang memberikan kesan kaki lebih panjang dan ramping. Potongan modern yang versatile — bisa dipadukan dengan blouse tucked in, crop top, hingga oversized shirt untuk berbagai tampilan.',
+                material: '70% Polyester, 30% Viscose, Wrinkle-resistant',
+                care: 'Cuci mesin 30°C. Setrika suhu sedang dari bagian dalam.',
+                fit: 'High waist, wide leg. Model 168cm memakai ukuran S.',
+                sku: 'NR-CL-004-2026',
+                reviews: [{ name: 'Dini A.', loc: 'Jakarta', text: 'Bikin kaki keliatan jenjang! Bahannya gak panas dan gak gampang kusut.', stars: 5 },
+                { name: 'Sari M.', loc: 'Surabaya', text: 'Jahitannya rapi, warnanya hitam pekat. Satisfied!', stars: 4 },
+                { name: 'Winda R.', loc: 'Makassar', text: 'Cukup oke, tapi ukurannya agak besar dari ekspektasi.', stars: 4 }]
+            },
+            {
+                id: 5, name: 'Wrap Mini Skirt', sub: 'Satin Finish', cat: 'dress', price: 185000, ori: 0, flag: 'new',
+                col: ['#0a0a0a', '#1a1a1a', '#fff'], colNames: ['Black', 'Dark', 'White'],
+                stars: 4.8, sold: 755,
+                img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=85',
+                    'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=85',
+                    'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=85',
+                    'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                soldout: [],
+                stock: 55,
+                desc: 'Mini skirt model wrap dengan finishing satin yang elegan. Detail ikatan di samping memberikan fleksibilitas ukuran dan sentuhan feminin. Cocok dipadukan dengan fitted top atau tuck-in blouse untuk tampilan chic.',
+                material: '100% Polyester Satin, 120 GSM',
+                care: 'Cuci tangan dengan air dingin. Setrika suhu rendah dari bagian dalam.',
+                fit: 'Adjustable wrap. One size fits S-L.',
+                sku: 'NR-SK-005-2026',
+                reviews: [{ name: 'Hana P.', loc: 'Bali', text: 'Bahannya mewah banget, jatuhnya bagus! Banyak yang nanya beli di mana.', stars: 5 },
+                { name: 'Amel S.', loc: 'Palembang', text: 'Cantik banget, cocok buat date night!', stars: 5 },
+                { name: 'Tara L.', loc: 'Bandung', text: 'Satin-nya tidak mudah kusut, good quality.', stars: 4 }]
+            },
+            {
+                id: 6, name: 'Puff Sleeve Blouse', sub: 'Cotton Voile', cat: 'blouse', price: 155000, ori: 210000, flag: 'sale',
+                col: ['#fff', '#e8e8e8', '#0a0a0a'], colNames: ['White', 'Off White', 'Black'],
+                stars: 4.7, sold: 1240,
+                img: 'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=85',
+                    'https://images.unsplash.com/photo-1551803091-e20673f15770?w=800&q=85',
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=85',
+                    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+                soldout: ['XXL'],
+                stock: 33,
+                desc: 'Blouse dengan detail lengan puff yang memberikan kesan feminin dan playful. Bahan cotton voile yang ringan dan transparan — dipadukan dengan inner untuk tampilan yang lebih versatile.',
+                material: '100% Cotton Voile, 80 GSM',
+                care: 'Cuci tangan. Setrika suhu rendah.',
+                fit: 'Loose fit. Model 168cm memakai ukuran S.',
+                sku: 'NR-BL-006-2026',
+                reviews: [{ name: 'Bella K.', loc: 'Jakarta', text: 'Imut banget! Lengan puff-nya kembang tapi tetap rapi.', stars: 5 },
+                { name: 'Sinta M.', loc: 'Yogyakarta', text: 'Bahannya tipis tapi lembut, cocok buat udara panas.', stars: 4 },
+                { name: 'Fanny T.', loc: 'Surabaya', text: 'Wajib beli! Banyak yang request minta foto outfit ini.', stars: 5 }]
+            },
+            {
+                id: 7, name: 'Knit Turtleneck', sub: 'Wool Mix', cat: 'blouse', price: 220000, ori: 0, flag: 'new',
+                col: ['#0a0a0a', '#444', '#888'], colNames: ['Black', 'Dark Grey', 'Grey'],
+                stars: 4.9, sold: 430,
+                img: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=85',
+                    'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=800&q=85',
+                    'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=85',
+                    'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                soldout: ['XS'],
+                stock: 29,
+                desc: 'Knit turtleneck dengan bahan wool mix yang hangat dan nyaman. Rajutan halus dengan stretch sedikit untuk kenyamanan maksimal. Cocok dipadukan dengan wide leg trousers atau rok midi untuk tampilan editorial.',
+                material: '50% Wool, 50% Acrylic Knit',
+                care: 'Cuci tangan dengan air dingin. Jemur mendatar agar tidak melar.',
+                fit: 'Fitted. Model 168cm memakai ukuran S.',
+                sku: 'NR-KN-007-2026',
+                reviews: [{ name: 'Nanda W.', loc: 'Bandung', text: 'Quality knit-nya bagus, tidak mudah bulu-bulu. Worth it!', stars: 5 },
+                { name: 'Lisa T.', loc: 'Jakarta', text: 'Hangat tapi tidak gerah, cocok untuk AC kantor.', stars: 5 },
+                { name: 'Rizka M.', loc: 'Palembang', text: 'Elegan banget dipadupadankan, puas banget beli ini.', stars: 4 }]
+            },
+            {
+                id: 8, name: 'Tailored Coat', sub: 'Classic Cut', cat: 'outer', price: 520000, ori: 680000, flag: 'sale',
+                col: ['#0a0a0a', '#1a1a1a', '#888'], colNames: ['Black', 'Midnight', 'Charcoal'],
+                stars: 5.0, sold: 310,
+                img: 'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=800&q=85',
+                imgs: [
+                    'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=800&q=85',
+                    'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=85',
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=85',
+                    'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=85',
+                ],
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                soldout: [],
+                stock: 12,
+                desc: 'Tailored coat dengan potongan klasik yang tidak pernah lekang oleh waktu. Bahan tebal premium dengan lining satin di bagian dalam untuk kenyamanan ekstra. Investasi fashion terbaik yang dapat dipakai selama bertahun-tahun.',
+                material: '70% Wool, 30% Cashmere Blend, Satin Lining',
+                care: 'Dry clean only. Simpan dalam dust bag dan gantung dengan hanger tebal.',
+                fit: 'Semi-fitted. Model 168cm memakai ukuran S.',
+                sku: 'NR-OT-008-2026',
+                reviews: [{ name: 'Veronica S.', loc: 'Jakarta Selatan', text: 'Coat terbaik yang pernah saya miliki. Bahannya sangat mewah dan jahitannya sempurna.', stars: 5 },
+                { name: 'Priska A.', loc: 'Surabaya', text: 'Investasi fashion paling worth it! Sudah 2 musim masih terlihat baru.', stars: 5 },
+                { name: 'Mega L.', loc: 'Bali', text: 'Pelayanan dan produknya excellent, packing juga sangat bagus!', stars: 5 }]
+            },
+        ];
+
+        const FILTERS2 = [{ f: 'all', l: 'All' }, { f: 'dress', l: 'Dress' }, { f: 'blouse', l: 'Blouse' }, { f: 'celana', l: 'Celana' }, { f: 'outer', l: 'Outer' }];
+        const fmt = n => 'Rp ' + n.toLocaleString('id-ID');
+
+        /* FILTER BAR */
+        const fb = document.getElementById('filterBar');
+        FILTERS2.forEach(({ f, l }) => {
+            const b = document.createElement('button');
+            b.className = 'flt' + (f === 'all' ? ' on' : '');
+            b.dataset.f = f; b.textContent = l;
+            b.addEventListener('click', () => {
+                document.querySelectorAll('.flt').forEach(x => x.classList.remove('on'));
+                b.classList.add('on'); renderProds(f);
+            });
+            fb.appendChild(b);
+        });
+
+        function starSVG(filled = true) { return `<svg viewBox="0 0 24 24" style="fill:${filled ? '#f0b429' : '#ddd'};stroke:none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`; }
+        function starsHTML(rating) {
+            let h = '';
+            for (let i = 1; i <= 5; i++) h += starSVG(i <= Math.round(rating));
+            return h;
+        }
+
+        function renderProds(f = 'all') {
+            const g = document.getElementById('prodGrid');
+            const list = f === 'all' ? PRODS : PRODS.filter(p => p.cat === f);
+            if (!list.length) { g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:#888">Belum ada produk.</div>'; return; }
+            g.innerHTML = list.map(p => {
+                const disc = p.ori ? Math.round((1 - p.price / p.ori) * 100) : 0;
+                const flagCls = p.flag === 'new' ? 'new' : p.flag === 'sale' ? 'sale' : 'hot';
+                return `<div class="pcard" onclick="openProductDetail(${p.id})">
+  <div class="p-imgwrap">
+    <span class="p-flag ${flagCls}">${p.flag === 'new' ? 'New' : p.flag === 'sale' ? 'Sale' : 'Hot'}</span>
+    <button class="p-wish" onclick="event.stopPropagation();wishIt(this)"><svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+    <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+    <div class="p-hoverbar">
+      <button class="p-add-cart" onclick="event.stopPropagation();openProductDetail(${p.id})">Lihat Detail</button>
+      <button class="p-quickview" onclick="event.stopPropagation();addToCartDirect(${p.id})"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+    </div>
+  </div>
+  <div class="p-info">
+    <div class="p-swatches">${p.col.map(c => `<span class="p-swatch" style="background:${c}"></span>`).join('')}</div>
+    <div class="p-name">${p.name}</div>
+    <div class="p-sub">${p.sub}</div>
+    <div class="p-pr"><span class="p-price">${fmt(p.price)}</span>${p.ori ? `<span class="p-ori">${fmt(p.ori)}</span><span class="p-pct">-${disc}%</span>` : ''}</div>
+    <div class="p-stars"><div class="p-star-icons">${starsHTML(p.stars)}</div><span class="p-sold">${p.sold.toLocaleString('id-ID')} terjual</span></div>
+  </div>
+</div>`;
+            }).join('');
+        }
+        renderProds();
+
+        /* ════ PRODUCT DETAIL ════ */
+        let currentProd = null;
+        let detailQty = 1;
+        let detailSelColor = 0;
+        let detailSelSize = null;
+        let detailWishlisted = false;
+
+        function openProductDetail(id) {
+            const p = PRODS.find(x => x.id === id);
+            if (!p) return;
+            currentProd = p;
+            detailQty = 1;
+            detailSelColor = 0;
+            detailSelSize = null;
+            detailWishlisted = false;
+
+            const disc = p.ori ? Math.round((1 - p.price / p.ori) * 100) : 0;
+            const flagCls = p.flag === 'new' ? 'new' : p.flag === 'sale' ? 'sale' : 'hot';
+            const related = PRODS.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4);
+
+            const thumbsHTML = p.imgs.map((img, i) => `
+        <div class="pd-thumb${i === 0 ? ' active' : ''}" onclick="switchImg(this,'${img}')" id="thumb-${i}">
+            <img src="${img}" alt="" loading="lazy"/>
+        </div>`).join('');
+
+            const colorsHTML = p.col.map((c, i) => `
+        <button class="pd-color-btn${i === 0 ? ' active' : ''}" 
+            style="background:${c};border-color:${i === 0 ? 'var(--b)' : 'transparent'}"
+            onclick="selectColor(this,${i},'${p.colNames[i]}')"
+            title="${p.colNames[i]}"></button>`).join('');
+
+            const sizesHTML = p.sizes.map(s => {
+                const so = p.soldout.includes(s);
+                return `<button class="pd-size-btn${so ? ' soldout' : ''}" 
+            onclick="${so ? '' : ` selectSize(this,'${s}')`}" 
+            ${so ? 'disabled' : ''}>${s}${so ? '<br><span style="font-size:.55rem;color:var(--w4)">Habis</span>' : ''}</button>`;
+            }).join('');
+
+            const revHTML = p.reviews.map(r => `
+        <div style="padding:1rem 0;border-bottom:1px solid var(--w3)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
+                <div>
+                    <span style="font-weight:600;font-size:.88rem">${r.name}</span>
+                    <span style="color:var(--b4);font-size:.75rem;margin-left:.5rem">· ${r.loc}</span>
+                </div>
+                <div style="display:flex;gap:2px">${starsHTML(r.stars)}</div>
+            </div>
+            <p style="font-size:.84rem;color:var(--b2);line-height:1.65;font-style:italic">"${r.text}"</p>
+        </div>`).join('');
+
+            const relatedHTML = related.map(rp => {
+                const rdisc = rp.ori ? Math.round((1 - rp.price / rp.ori) * 100) : 0;
+                return `<div class="pcard" onclick="openProductDetail(${rp.id})" style="cursor:pointer">
+            <div class="p-imgwrap">
+                <img src="${rp.img}" alt="${rp.name}" loading="lazy" style="height:220px"/>
+            </div>
+            <div class="p-info">
+                <div class="p-name" style="font-size:.9rem">${rp.name}</div>
+                <div class="p-pr"><span class="p-price" style="font-size:.88rem">${fmt(rp.price)}</span>${rp.ori ? `<span class="p-ori" style="font-size:.75rem">${fmt(rp.ori)}</span>` : ''}</div>
+            </div>
+        </div>`;
+            }).join('');
+
+            const stockColor = p.stock < 20 ? 'color:#c4555a' : 'color:#3d5c45';
+            const stockText = p.stock < 20 ? `Sisa ${p.stock} pcs` : `Stok tersedia`;
+
+            document.getElementById('detailInner').innerHTML = `
+        <div class="pd-breadcrumb">
+            <a onclick="goPage('home')">Home</a>
+            <span>›</span>
+            <a onclick="goPage('koleksi')">Koleksi</a>
+            <span>›</span>
+            <a onclick="goPageFilter('${p.cat}')">${p.cat.charAt(0).toUpperCase() + p.cat.slice(1)}</a>
+            <span>›</span>
+            <span style="color:var(--b)">${p.name}</span>
+        </div>
+
+        <div class="pd-main">
+            <!-- GALLERY -->
+            <div class="pd-gallery">
+                <div class="pd-main-img" id="pdMainImg">
+                    <img src="${p.imgs[0]}" alt="${p.name}" id="pdMainImgEl"/>
+                    <span class="pd-flag ${flagCls}">${p.flag === 'new' ? 'New' : p.flag === 'sale' ? 'Sale' : 'Hot'}</span>
+                </div>
+                <div class="pd-thumbs" id="pdThumbs">${thumbsHTML}</div>
+            </div>
+
+            <!-- INFO -->
+            <div class="pd-info">
+                <div class="pd-brand">NOIR. Collection 2026</div>
+                <h1 class="pd-name">${p.name}</h1>
+                <div class="pd-sub">${p.sub}</div>
+
+                <div class="pd-rating-row">
+                    <div class="pd-stars-wrap">${starsHTML(p.stars)}</div>
+                    <span class="pd-rating-num">${p.stars}</span>
+                    <span class="pd-review-link">${p.reviews.length} ulasan</span>
+                    <span class="pd-sold-badge">${p.sold.toLocaleString('id-ID')} terjual</span>
+                </div>
+
+                <div class="pd-price-row">
+                    <span class="pd-price">${fmt(p.price)}</span>
+                    ${p.ori ? `<span class="pd-ori-price">${fmt(p.ori)}</span><span class="pd-disc-badge">-${disc}%</span>` : ''}
+                </div>
+
+                <!-- COLOR -->
+                <div class="pd-section-label">Warna <span id="selColorName">${p.colNames[0]}</span></div>
+                <div class="pd-colors">${colorsHTML}</div>
+
+                <!-- SIZE -->
+                <div class="pd-section-label">Ukuran 
+                    <span id="selSizeName" style="color:var(--b4)">Pilih ukuran</span>
+                </div>
+                <div class="pd-sizes">${sizesHTML}</div>
+                <div style="margin-top:-.8rem;margin-bottom:1.4rem">
+                    <button onclick="toggleAccord('accord-size')" style="background:none;border:none;font-size:.72rem;color:var(--b4);text-decoration:underline;cursor:pointer;padding:0">📏 Panduan ukuran</button>
+                </div>
+
+                <!-- QTY -->
+                <div class="pd-section-label">Jumlah</div>
+                <div class="pd-qty-row">
+                    <div class="pd-qty-wrap">
+                        <button class="pd-qty-btn" onclick="changeQty(-1)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <span class="pd-qty-num" id="pdQtyNum">1</span>
+                        <button class="pd-qty-btn" onclick="changeQty(1)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                    </div>
+                    <span class="pd-stock" style="${stockColor}">${stockText}</span>
+                </div>
+
+                <!-- CTA -->
+                <button class="pd-btn-cart" onclick="addToCartFromDetail()">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    Tambah ke Keranjang
+                </button>
+                <button class="pd-btn-wish" id="pdWishBtn" onclick="toggleDetailWish()">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    Tambah ke Wishlist
+                </button>
+
+                <!-- GUARANTEES -->
+                <div class="pd-guarantees">
+                    <div class="pd-guar"><div class="pd-guar-icon">🚚</div><div class="pd-guar-label">Free Ongkir</div></div>
+                    <div class="pd-guar"><div class="pd-guar-icon">↩</div><div class="pd-guar-label">Return 7 Hari</div></div>
+                    <div class="pd-guar"><div class="pd-guar-icon">✓</div><div class="pd-guar-label">100% Original</div></div>
+                </div>
+
+                <!-- ACCORDION -->
+                <div class="pd-accord">
+                    <div class="pd-accord-item open">
+                        <button class="pd-accord-head" onclick="toggleAccord('accord-desc')">
+                            Deskripsi Produk
+                            <svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="pd-accord-body" id="accord-desc">
+                            <div class="pd-accord-content">
+                                <p>${p.desc}</p>
+                                <ul style="margin-top:.8rem">
+                                    <li>Material: ${p.material}</li>
+                                    <li>SKU: ${p.sku}</li>
+                                    <li>Kategori: ${p.cat.charAt(0).toUpperCase() + p.cat.slice(1)}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pd-accord-item">
+                        <button class="pd-accord-head" onclick="toggleAccord('accord-care')">
+                            Cara Perawatan
+                            <svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="pd-accord-body" id="accord-care">
+                            <div class="pd-accord-content">
+                                <p>${p.care}</p>
+                                <ul style="margin-top:.8rem">
+                                    <li>Jangan menggunakan pemutih</li>
+                                    <li>Cuci terpisah dengan pakaian berwarna</li>
+                                    <li>Simpan di tempat yang kering dan sejuk</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pd-accord-item" id="accord-size-wrap">
+                        <button class="pd-accord-head" onclick="toggleAccord('accord-size')">
+                            Panduan Ukuran
+                            <svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="pd-accord-body" id="accord-size">
+                            <div class="pd-accord-content">
+                                <p style="margin-bottom:.8rem">${p.fit}</p>
+                                <table class="size-table">
+                                    <thead><tr><th>Ukuran</th><th>Lingkar Dada</th><th>Lingkar Pinggang</th><th>Panjang</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>XS</td><td>80–84 cm</td><td>60–64 cm</td><td>sesuai produk</td></tr>
+                                        <tr><td>S</td><td>84–88 cm</td><td>64–68 cm</td><td>sesuai produk</td></tr>
+                                        <tr class="highlight"><td>M</td><td>88–92 cm</td><td>68–72 cm</td><td>sesuai produk</td></tr>
+                                        <tr><td>L</td><td>92–96 cm</td><td>72–76 cm</td><td>sesuai produk</td></tr>
+                                        <tr><td>XL</td><td>96–100 cm</td><td>76–80 cm</td><td>sesuai produk</td></tr>
+                                        <tr><td>XXL</td><td>100–104 cm</td><td>80–84 cm</td><td>sesuai produk</td></tr>
+                                    </tbody>
+                                </table>
+                                <p style="margin-top:.7rem;font-size:.76rem;color:var(--b4)">Jika ragu antara dua ukuran, kami sarankan memilih ukuran yang lebih besar.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pd-accord-item">
+                        <button class="pd-accord-head" onclick="toggleAccord('accord-reviews')">
+                            Ulasan Pelanggan (${p.reviews.length})
+                            <svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="pd-accord-body" id="accord-reviews">
+                            <div class="pd-accord-content">
+                                <div style="display:flex;align-items:center;gap:1rem;padding:.5rem 0 1rem;border-bottom:1px solid var(--w3);margin-bottom:.5rem">
+                                    <div style="text-align:center">
+                                        <div style="font-family:var(--fn-d);font-size:3rem;font-weight:700;line-height:1">${p.stars}</div>
+                                        <div style="display:flex;gap:2px;justify-content:center;margin:.3rem 0">${starsHTML(p.stars)}</div>
+                                        <div style="font-size:.72rem;color:var(--b4)">${p.reviews.length} ulasan</div>
+                                    </div>
+                                </div>
+                                ${revHTML}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RELATED -->
+        ${related.length > 0 ? `
+        <div class="pd-related">
+            <div style="padding:0 0 2rem">
+                <span class="sec-eyebrow">Mungkin Kamu Suka</span>
+                <h2 class="sec-h">Produk <em>Serupa</em></h2>
+            </div>
+            <div class="pd-related-grid">${relatedHTML}</div>
+        </div>` : ''}
+    `;
+
+            goPage('detail');
+        }
+
+        function switchImg(thumb, src) {
+            document.getElementById('pdMainImgEl').src = src;
+            document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+
+        function selectColor(btn, idx, name) {
+            detailSelColor = idx;
+            document.querySelectorAll('.pd-color-btn').forEach(b => {
+                b.classList.remove('active');
+                b.style.borderColor = 'transparent';
+            });
+            btn.classList.add('active');
+            btn.style.borderColor = 'var(--b)';
+            document.getElementById('selColorName').textContent = name;
+        }
+
+        function selectSize(btn, size) {
+            detailSelSize = size;
+            document.querySelectorAll('.pd-size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('selSizeName').textContent = size;
+            document.getElementById('selSizeName').style.color = 'var(--b)';
+        }
+
+        function changeQty(delta) {
+            detailQty = Math.max(1, Math.min(10, detailQty + delta));
+            document.getElementById('pdQtyNum').textContent = detailQty;
+        }
+
+        function toggleAccord(id) {
+            const body = document.getElementById(id);
+            if (!body) return;
+            const item = body.closest('.pd-accord-item');
+            const isOpen = item.classList.contains('open');
+            item.classList.toggle('open', !isOpen);
+        }
+
+        function addToCartFromDetail() {
+            if (!detailSelSize) { showToast('⚠ Pilih ukuran terlebih dahulu!'); return; }
+            const p = currentProd;
+            const colorName = p.colNames[detailSelColor];
+            const key = `${p.name}|${detailSelSize}|${colorName}`;
+            const ex = cart.find(i => i.key === key);
+            if (ex) { ex.qty += detailQty; }
+            else { cart.push({ key, name: p.name, price: fmt(p.price), img: p.img, qty: detailQty, variant: `${colorName} · ${detailSelSize}` }); }
+            renderCart();
+            showToast(`✓ ${p.name} (${colorName}, ${detailSelSize}) ×${detailQty} ditambahkan`);
+        }
+
+        function addToCartDirect(id) {
+            const p = PRODS.find(x => x.id === id);
+            if (!p) return;
+            const key = `${p.name}|S|${p.colNames[0]}`;
+            const ex = cart.find(i => i.key === key);
+            ex ? ex.qty++ : cart.push({ key, name: p.name, price: fmt(p.price), img: p.img, qty: 1, variant: `${p.colNames[0]} · S` });
+            renderCart();
+            showToast(`✓ ${p.name} ditambahkan`);
+        }
+
+        function toggleDetailWish() {
+            detailWishlisted = !detailWishlisted;
+            const btn = document.getElementById('pdWishBtn');
+            if (btn) {
+                btn.classList.toggle('wishlisted', detailWishlisted);
+                btn.querySelector('svg path').setAttribute('fill', detailWishlisted ? 'var(--b)' : 'none');
+            }
+            showToast(detailWishlisted ? '♥ Ditambahkan ke wishlist' : '♡ Dihapus dari wishlist');
+        }
+
+        /* ════ SEARCH ════ */
+        function openSearchFn() {
+            document.getElementById('searchOverlay').classList.add('on');
+            document.getElementById('searchInput').focus();
+            renderSearchResults('');
+        }
+        function closeSearch() {
+            document.getElementById('searchOverlay').classList.remove('on');
+            document.getElementById('searchInput').value = '';
+        }
+        document.getElementById('openSearch').addEventListener('click', openSearchFn);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
+        document.getElementById('searchInput').addEventListener('input', function () {
+            renderSearchResults(this.value.trim().toLowerCase());
+        });
+        function renderSearchResults(query) {
+            const container = document.getElementById('searchResults');
+            if (!query) { container.innerHTML = `<div class="sr-empty">Mulai ketik untuk mencari produk…</div>`; return; }
+            const results = PRODS.filter(p =>
+                p.name.toLowerCase().includes(query) || p.sub.toLowerCase().includes(query) ||
+                p.cat.toLowerCase().includes(query)
+            );
+            if (!results.length) { container.innerHTML = `<div class="sr-empty">Produk "${query}" tidak ditemukan</div>`; return; }
+            container.innerHTML = results.map(p => `
+    <div class="sr-card" onclick="closeSearch();openProductDetail(${p.id})">
+      <div class="sr-card-img"><img src="${p.img}" alt="${p.name}" loading="lazy"/></div>
+      <div class="sr-card-info">
+        <div class="sr-card-name">${p.name}</div>
+        <div class="sr-card-price">${fmt(p.price)}${p.ori ? ` · <span style="text-decoration:line-through;opacity:.5">${fmt(p.ori)}</span>` : ''}</div>
+      </div>
+    </div>`).join('');
+        }
+
+        /* ════ CART ════ */
+        let cart = [], promo = 0, selPayMethod = 'gopay';
+
+        function renderCart() {
+            document.getElementById('cartCount').textContent = cart.reduce((s, i) => s + i.qty, 0);
+            const body = document.getElementById('cartBody'), foot = document.getElementById('cartFoot');
+            if (!cart.length) {
+                body.innerHTML = `<div class="cd-empty"><div class="cd-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><p>Your bag is empty</p><p>Discover our collection</p></div>`;
+                foot.style.display = 'none'; return;
+            }
+            body.innerHTML = cart.map((it, i) => `
+  <div class="ci">
+    <div class="ci-img"><img src="${it.img}" alt="${it.name}"/></div>
+    <div class="ci-info">
+      <div class="ci-name">${it.name}</div>
+      <div class="ci-var">${it.variant || 'Size: M · Black'}</div>
+      <div class="ci-price">${it.price}</div>
+      <div class="ci-ctrl">
+        <button class="ci-qbtn" onclick="chQ(${i},-1)"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <span class="ci-qty">${it.qty}</span>
+        <button class="ci-qbtn" onclick="chQ(${i},1)"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <button class="ci-del" onclick="rmI(${i})"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+      </div>
+    </div>
+  </div>`).join('');
+            foot.style.display = 'block';
+            const sub = calcSub(), total = Math.max(0, sub - promo);
+            document.getElementById('cSub').textContent = fmt(sub);
+            document.getElementById('cTotal').textContent = fmt(total);
+            const dr = document.getElementById('discRow');
+            if (promo) { dr.style.display = 'flex'; document.getElementById('discAmt').textContent = '-' + fmt(promo); } else dr.style.display = 'none';
+        }
+
+        function calcSub() { return cart.reduce((s, it) => { const n = parseInt((it.price || '0').replace(/[^0-9]/g, '')); return s + n * it.qty; }, 0); }
+        function chQ(i, d) { cart[i].qty += d; if (cart[i].qty < 1) cart.splice(i, 1); renderCart(); }
+        function rmI(i) { cart.splice(i, 1); renderCart(); }
+        function applyPromo() {
+            const code = document.getElementById('promoIn').value.trim().toUpperCase();
+            const map = { 'NOIR10': 50000, 'SALE25': 75000, 'VIP50': 120000 };
+            if (map[code]) { promo = map[code]; renderCart(); showToast('🎉 Promo aktif! Hemat ' + fmt(promo)); }
+            else showToast('✕ Kode promo tidak valid');
+        }
+        function openCart() { document.getElementById('cartDrawer').classList.add('on'); document.getElementById('veil').classList.add('on'); }
+        function closeCart() { document.getElementById('cartDrawer').classList.remove('on'); document.getElementById('veil').classList.remove('on'); }
+        document.getElementById('openCart').addEventListener('click', openCart);
+
+        /* ════ CHECKOUT ════ */
+        function selPay(el) { document.querySelectorAll('.popt').forEach(x => x.classList.remove('on')); el.classList.add('on'); selPayMethod = el.dataset.p; }
+        function openCheckout() {
+            if (!cart.length) { showToast('🛒 Keranjang masih kosong!'); return; }
+            closeCart();
+            const sub = calcSub(), total = Math.max(0, sub - promo);
+            document.getElementById('mSub').textContent = fmt(sub);
+            document.getElementById('mTotal').textContent = fmt(total);
+            const mdr = document.getElementById('mDiscRow');
+            if (promo) { mdr.style.display = 'flex'; document.getElementById('mDisc').textContent = '-' + fmt(promo); } else mdr.style.display = 'none';
+            document.getElementById('sumItems').innerHTML = cart.map(it => `<div class="sum-item"><span>${it.name} ×${it.qty}</span><span>${it.price}</span></div>`).join('');
+            document.getElementById('checkoutModal').classList.add('on');
+        }
+        function closeCheckout() { document.getElementById('checkoutModal').classList.remove('on'); }
+
+        /* ════ PLACE ORDER ════ */
+        function placeOrder() {
+            const name = document.getElementById('cName').value.trim();
+            const phone = document.getElementById('cPhone').value.trim();
+            const email = document.getElementById('cEmail').value.trim();
+            const addr = document.getElementById('cAddr').value.trim();
+            const city = document.getElementById('cCity').value.trim();
+            const zip = document.getElementById('cZip').value.trim();
+            const eksp = document.getElementById('cEksp').value;
+            if (!name || !phone || !addr || !city) { showToast('⚠ Lengkapi data pengiriman!'); return; }
+            const oid = 'NR' + Date.now().toString().slice(-8);
+            const now = new Date();
+            const dstr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+            const tstr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            const sub = calcSub(), total = Math.max(0, sub - promo);
+            const ekspMap = { jne: 'JNE Regular', jnt: 'J&T Express', sicepat: 'SiCepat', sameday: 'Same Day' };
+            const payMap = { gopay: 'GoPay', ovo: 'OVO', dana: 'Dana', bca: 'Transfer BCA', mandiri: 'Mandiri', cod: 'COD' };
+            const widths = [2, 1, 3, 1, 2, 1, 1, 3, 2, 1, 3, 2, 1, 1, 3, 2, 1, 2, 3, 1, 2, 1, 1, 3, 2, 3, 1, 2, 1, 3, 2, 1, 2, 1, 3];
+            const bars = widths.map(w => `<div class="s-bar" style="width:${w + 1}px;height:${32 + Math.floor(Math.random() * 14)}px;opacity:${.65 + Math.random() * .35}"></div>`).join('');
+            document.getElementById('strukInner').innerHTML = `
+  <div class="s-brand"><div class="s-brand-name">NOIR<em>.</em></div><div class="s-brand-sub">Premium Fashion Store · Est. 2018</div></div>
+  <div class="s-dash"></div>
+  <div class="s-meta">
+    <div class="s-meta-row"><span>No. Order</span><span><strong>${oid}</strong></span></div>
+    <div class="s-meta-row"><span>Tanggal</span><span>${dstr}</span></div>
+    <div class="s-meta-row"><span>Waktu</span><span>${tstr} WIB</span></div>
+    <div class="s-meta-row"><span>Pembayaran</span><span>${payMap[selPayMethod] || selPayMethod}</span></div>
+    <div class="s-meta-row"><span>Ekspedisi</span><span>${ekspMap[eksp] || eksp}</span></div>
+  </div>
+  <div class="s-dash"></div>
+  <div class="s-meta">
+    <div class="s-meta-row"><span>Penerima</span><span><strong>${name}</strong></span></div>
+    <div class="s-meta-row"><span>WhatsApp</span><span>${phone}</span></div>
+    ${email ? `<div class="s-meta-row"><span>Email</span><span>${email}</span></div>` : ''}
+    <div style="margin-top:.4rem;font-size:.72rem;color:#666;line-height:1.65;">${addr}, ${city} ${zip || ''}</div>
+  </div>
+  <div class="s-dash"></div>
+  <div class="s-section-label">Detail Produk</div>
+  ${cart.map(it => { const pn = parseInt((it.price || '0').replace(/[^0-9]/g, '')); return `<div class="s-item"><span class="s-item-name">${it.name}${it.variant ? ` (${it.variant})` : ''}</span><span class="s-item-qty">×${it.qty}</span><span class="s-item-price">${fmt(pn * it.qty)}</span></div>`; }).join('')}
+  <div class="s-solid"></div>
+  <div class="s-sub-row"><span>Subtotal</span><span>${fmt(sub)}</span></div>
+  <div class="s-sub-row"><span>Ongkos kirim</span><span style="font-weight:700;color:#3d5c45;">GRATIS</span></div>
+  ${promo ? `<div class="s-sub-row" style="color:#c4555a;"><span>Diskon Promo</span><span>-${fmt(promo)}</span></div>` : ''}
+  <div class="s-total-band"><span class="lbl">Total Bayar</span><span class="amt">${fmt(total)}</span></div>
+  <div class="s-dash"></div>
+  <div class="s-barcode"><div class="s-bars">${bars}</div><div class="s-barnum">${oid} · ${dstr.replace(/ /g, '-')}</div></div>
+  <div class="s-dash"></div>
+  <div class="s-thanks"><strong>Thank You ✦</strong><p>Pesananmu sedang diproses.<br>Kami akan konfirmasi via WhatsApp.<br>Happy Shopping!</p></div>`;
+            closeCheckout();
+            document.getElementById('strukVeil').classList.add('on');
+            cart = []; promo = 0; renderCart();
+        }
+        function closeStruk() { document.getElementById('strukVeil').classList.remove('on'); }
+
+        /* ════ MISC ════ */
+        function wishIt(btn) {
+            const svg = btn.querySelector('svg path');
+            const isLiked = svg.getAttribute('fill') === '#0a0a0a';
+            svg.setAttribute('fill', isLiked ? 'none' : '#0a0a0a');
+            showToast(isLiked ? '♡ Dihapus dari wishlist' : '♥ Ditambahkan ke wishlist');
+        }
+        function showToast(msg) {
+            const t = document.getElementById('toastEl');
+            t.textContent = msg; t.classList.add('on');
+            clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2800);
+        }
+
+        /* COUNTDOWN */
+        (() => {
+            const e = new Date(); e.setDate(e.getDate() + 3); e.setHours(14, 28, 45, 0);
+            const p = n => String(Math.floor(n)).padStart(2, '0');
+            function tick() {
+                const d = e - new Date(); if (d <= 0) return;
+                const dEl = document.getElementById('cdD');
+                const hEl = document.getElementById('cdH');
+                const mEl = document.getElementById('cdM');
+                const sEl = document.getElementById('cdS');
+                if (dEl) dEl.textContent = p(d / 86400000);
+                if (hEl) hEl.textContent = p(d % 86400000 / 3600000);
+                if (mEl) mEl.textContent = p(d % 3600000 / 60000);
+                if (sEl) sEl.textContent = p(d % 60000 / 1000);
+            }
+            tick(); setInterval(tick, 1000);
+        })();
+
+        /* NAVBAR SCROLL */
+        window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('up', scrollY > 30));
+
+        /* NEWSLETTER */
+        document.getElementById('newsBtn').addEventListener('click', () => {
+            const v = document.getElementById('newsEmail').value.trim();
+            if (!v || !v.includes('@')) { showToast('⚠ Email tidak valid'); return; }
+            showToast('🎉 Voucher Rp 50.000 terkirim ke ' + v);
+            document.getElementById('newsEmail').value = '';
+        });
+
+        renderCart();
+    </script>
+</body>
+
+</html>
